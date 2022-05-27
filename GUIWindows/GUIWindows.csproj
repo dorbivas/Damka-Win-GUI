@@ -81,5 +81,11 @@
     <None Include="Resources\background.png" />
     <Content Include="Sources\gk.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameEngine\GameEngine.csproj">
+      <Project>{f01f22ff-73a5-4eee-b9fe-e493ace68769}</Project>
+      <Name>GameEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
