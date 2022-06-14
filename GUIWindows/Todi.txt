@@ -1,0 +1,21 @@
+﻿
+
+TODO:
+ orgenize srces
+ Action \ event handlers, make them listen
+
+ todis gameForm
+	- build other todis
+
+ todis game manger connect to actions
+ todis gamelogic - add actions support
+ import all graphic srces 
+
+
+Idan
+
+
+
+D-cane (bivas)
+
+

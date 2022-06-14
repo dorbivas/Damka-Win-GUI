@@ -13,11 +13,14 @@ namespace GUIWindows
     public partial class FormGame : Form
     {
         public event EventHandler SettingsFilled, Moved, MessageBoxInteractions; // todo action? general Box ans
+
         private readonly FormSettings r_FormSettings = new FormSettings();
 
         private readonly Label labelPlayer1 = new Label();
         private readonly Label labelPlayer2 = new Label();
         private PictureBoxComponents[,] PictureBoxPieces;
+
+
 
         public FormGame()
         {
@@ -36,6 +39,7 @@ namespace GUIWindows
                 piece.BackColor = Color.Black;
                 //piece.BackgroundImage = GUIWindows.Resources; image TODO
                 piece.Image = null;
+               
             }
         }
 
@@ -110,7 +114,10 @@ namespace GUIWindows
         {
             throw new NotImplementedException();
 
+ 
+
         }
+
 
         private void OnPopUpBox( )
         {
