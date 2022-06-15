@@ -14,7 +14,6 @@ namespace GUIWindows
     public partial class FormGame : Form
     {
 
-        const int k_bla = 50;
         public event EventHandler SettingsFilled, MessageBoxInteractions;
         public event Action<Move> Moved;
 
@@ -23,7 +22,7 @@ namespace GUIWindows
         private readonly Label labelPlayer1 = new Label();
         private readonly Label labelPlayer2 = new Label();
         private PictureBoxComponents[,] PictureBoxPieces;
-
+        private EventGameSettings m_EventGameSettings;
 
 
         public FormGame()
@@ -71,10 +70,16 @@ namespace GUIWindows
                 r_FormSettings.Player2Name = "Noob Player 2";
             }
 
+            m_EventGameSettings = new EventGameSettings(
+                r_FormSettings.Player1Name,
+                r_FormSettings.Player2Name,
+                r_FormSettings.BoardSize,
+                r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
             //todo handle event setting filled
-            setBoardSize();
-            creatPiecesPictureMatrix();
-            setPlayerLables();
+            //setBoardSize();
+            //creatPiecesPictureMatrix();
+            //setPlayerLables();
+            OnGameSettingsFiled(m_EventGameSettings);
         }
 
         private void setPlayerLables()
@@ -113,13 +118,16 @@ namespace GUIWindows
         private void setBoardSize()
         {
             // 8x8
-            this.Size = new Size(k_bla * r_FormSettings.BoardSize , k_bla * r_FormSettings.BoardSize);
+            //this.Size = new Size(k_bla * r_FormSettings.BoardSize , k_bla * r_FormSettings.BoardSize);
             throw new NotImplementedException();
         }
 
-        protected virtual void OnGameSettingsFiled()
+        protected virtual void OnGameSettingsFiled(EventGameSettings egs)
         {
-            throw new NotImplementedException();
+            if(SettingsFilled != null)
+            {
+                SettingsFilled(this, egs);
+            }
 
         }
 
@@ -131,6 +139,7 @@ namespace GUIWindows
 
         }
 
+        
 
         private void OnPopUpBox( )
         {

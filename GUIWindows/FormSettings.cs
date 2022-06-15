@@ -3,7 +3,7 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
-
+    using GameEngine;
     public partial class FormSettings : Form
     {
         public FormSettings()
@@ -35,23 +35,23 @@
 
         }
 
-        public int BoardSize
+        public Board.eBoardSizes BoardSize
         {
             get
             {
-                int boardSize;
+                Board.eBoardSizes boardSize;
 
                 if (radioButtonSmallSize.Checked)
                 {
-                    boardSize = (int)GameEngine.Board.eBoardSizes.Small;
+                    boardSize = GameEngine.Board.eBoardSizes.Small;
                 }
                 else if (radioButtonMediumSize.Checked)
                 {
-                    boardSize = (int)GameEngine.Board.eBoardSizes.Medium;
+                    boardSize = GameEngine.Board.eBoardSizes.Medium;
                 }
                 else
                 {
-                    boardSize = (int)GameEngine.Board.eBoardSizes.Large;
+                    boardSize = GameEngine.Board.eBoardSizes.Large;
                 }
 
                 return boardSize;

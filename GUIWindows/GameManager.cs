@@ -11,17 +11,17 @@ namespace GUIWindows
     class GameManager
     {
 
-        private const int k_MaxCharsInName = 20;
-        private const char k_ExitGameSignal = 'Q';
-        private bool m_ExitGameFlag = false;
-        private int m_KeepPlayFlag = 1;
-        private string m_Player1Name;
-        private string m_Player2Name;
-        private Move m_LastMove;
-        private GameLogic.eGameStatus m_GameStatus = GameLogic.eGameStatus.Ongoing;
-        private Player.ePlayerType m_OpponentType;
-        private Board.eBoardSizes m_BoardSize;
-        EventGameSettings egsf;
+        //private const int k_MaxCharsInName = 20;
+        //private const char k_ExitGameSignal = 'Q';
+        //private bool m_ExitGameFlag = false;
+        //private int m_KeepPlayFlag = 1;
+        //private string m_Player1Name;
+        //private string m_Player2Name;
+        //private Move m_LastMove;
+        //private GameLogic.eGameStatus m_GameStatus = GameLogic.eGameStatus.Ongoing;
+        //private Player.ePlayerType m_OpponentType;
+        //private Board.eBoardSizes m_BoardSize;
+        //EventGameSettings egsf;
 
         private readonly FormGame r_FormGame = new FormGame();
         private readonly GameLogic r_Game;
@@ -35,7 +35,7 @@ namespace GUIWindows
 
         private void attachGameEvents()
         {
-            r_Game.GameStarted += r_GameEngine_GameStared;
+            r_Game.GameStarted += r_GameEngine_GameStarted;
             r_Game.GameFinished += r_GameEngine_GameFinished;
             r_Game.BoardUpdated += r_GameEngine_BoardUpdated;
             r_Game.PlayerSwitched += r_GameEngine_SwitchedPlayers;
@@ -50,9 +50,9 @@ namespace GUIWindows
 
         private void r_FormGame_SettingsFilled(object sender, EventArgs e)
         {
-            egsf = new EventGameSettings(FormSettings.);
+            EventGameSettings egs = e as EventGameSettings;
 
-            //r_Game.InitializeGameSpecifications();
+            r_Game.InitializeGameSpecifications(egs.BoardSize, egs.Player1Name, egs.Player2Name, (egs.Player2Type == Player.ePlayerType.Computer) ? true : false);
         }
 
         private void r_FormGame_Moved(Move i_NextMove)
@@ -108,11 +108,11 @@ namespace GUIWindows
             //r_FormGame.SwitchPlayers();
         }
 
-        private void r_GameEngine_GameStared(object sender)
+        private void r_GameEngine_GameStarted(object sender)
         {
-            m_ExitGameFlag = false;
-            m_GameStatus = GameLogic.eGameStatus.Ongoing;
-            r_Game.InitializeGameSpecifications(m_BoardSize, m_Player1Name, m_Player2Name, (m_OpponentType == Player.ePlayerType.Computer) ? true : false);
+            //m_ExitGameFlag = false;
+            //m_GameStatus = GameLogic.eGameStatus.Ongoing;
+            //r_Game.InitializeGameSpecifications(m_BoardSize, m_Player1Name, m_Player2Name, (m_OpponentType == Player.ePlayerType.Computer) ? true : false);
             r_Game.ResetGameEngine();
 
             r_FormGame.StartNewSession();
