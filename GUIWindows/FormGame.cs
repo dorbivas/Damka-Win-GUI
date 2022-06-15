@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameEngine;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,10 @@ namespace GUIWindows
 {
     public partial class FormGame : Form
     {
-        public event EventHandler SettingsFilled, Moved, MessageBoxInteractions; // todo action? general Box ans
+
+        const int k_bla = 50;
+        public event EventHandler SettingsFilled, MessageBoxInteractions;
+        public event Action<Move> Moved;
 
         private readonly FormSettings r_FormSettings = new FormSettings();
 
@@ -26,6 +30,8 @@ namespace GUIWindows
         {
             InitializeComponent();
         }
+
+        
 
         public void MessageBoxError(string i_Message)
         {
@@ -41,6 +47,11 @@ namespace GUIWindows
                 piece.Image = null;
                
             }
+        }
+
+        public void StartNewSession()
+        {
+
         }
 
         public void m_FormSettings_Closed(object sender, FormClosedEventArgs e)
@@ -101,6 +112,8 @@ namespace GUIWindows
 
         private void setBoardSize()
         {
+            // 8x8
+            this.Size = new Size(k_bla * r_FormSettings.BoardSize , k_bla * r_FormSettings.BoardSize);
             throw new NotImplementedException();
         }
 

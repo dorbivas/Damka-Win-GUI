@@ -22,8 +22,8 @@ namespace GUIWindows
         private Player.ePlayerType m_OpponentType;
         private Board.eBoardSizes m_BoardSize;
 
-        private readonly FormGame m_FormGame = new FormGame();
-        private readonly GameLogic m_Game;
+        private readonly FormGame r_FormGame = new FormGame();
+        private readonly GameLogic r_Game;
 
         public void Run()
         {
@@ -40,10 +40,43 @@ namespace GUIWindows
 
         private void attachGameEvents()
         {
-            //Todo
+            r_Game.GameStarted += r_GameEngine_GameStared;
+            r_Game.GameFinished += r_GameEngine_GameFinished;
+            r_Game.BoardUpdated += r_GameEngine_BoardUpdated;
+            r_Game.PlayerSwitched += r_GameEngine_SwitchedPlayers;
         }
 
-        private void m_FormGame_MoveEnterd(object sender, EventArgs e)
+        private void attachUIEvents()
+        {
+            r_FormGame.SettingsFilled += r_FormGame_SettingsFilled;
+            r_FormGame.MessageBoxInteractions += r_FormGame_MessageBoxInteractions;
+            r_FormGame.Moved += r_FormGame_Moved;
+        }
+
+        private void r_FormGame_SettingsFilled(object sender, EventArgs e)
+        {
+            //EventGameSettings sf = new EventGameSettings
+
+            //r_Game.InitializeGameSpecifications();
+        }
+
+        private void r_FormGame_Moved(object sender, EventArgs e)
+        {
+
+        }
+
+        private void r_FormGame_SettingsFilled(object sender, EventArgs e)
+        {
+
+        }
+
+
+            private void r_GameEngine_BoardUpdated(Board i_Board)
+        {
+            //todo
+        }
+
+        private void r_FormGame_MoveEnterd(object sender, EventArgs e)
         {
             //TODO action
 
@@ -60,12 +93,35 @@ namespace GUIWindows
 
         }
 
-        private void m_AmericanCheckers_BoardUpdated(object sender, EventArgs e)
+        private void r_GameEngine_BoardUpdated(object sender, EventArgs e)
         {
             //handle game events
 
             //markCurrentPlayer();
             //update FormGame funcs
+        }
+
+        private void r_GameEngine_GameFinished(object sender)
+        {
+            GameLogic game = sender as GameLogic;
+
+            // r_FormGame.ContinuePlayingMessageBox(game); todo
+        }
+
+        private void r_GameEngine_SwitchedPlayers()
+        {
+            //r_FormGame.SwitchPlayers();
+        }
+
+        private void r_GameEngine_GameStared(object sender)
+        {
+            m_ExitGameFlag = false;
+            m_GameStatus = GameLogic.eGameStatus.Ongoing;
+            r_Game.InitializeGameSpecifications(m_BoardSize, m_Player1Name, m_Player2Name, (m_OpponentType == Player.ePlayerType.Computer) ? true : false);
+            r_Game.ResetGameEngine();
+
+            r_FormGame.StartNewSession();
+
         }
 
         private void makeBoard() // todo naming!

@@ -20,6 +20,11 @@ namespace GameEngine
         private int m_Player1Score;
         private int m_Player2Score;
 
+        public event Action<GameLogic> GameStarted;
+        public event Action<GameLogic> GameFinished;
+        public event Action<Board> BoardUpdated;
+        public event Action PlayerSwitched ;
+
         public Board Board
         {
             get => m_GameBoard;
@@ -79,6 +84,31 @@ namespace GameEngine
             m_NextPlayer.UpdatePlayerMoves(m_GameBoard);
             m_LastMove = null;
         }
+
+        private void OnGameFinished()
+        {
+            if (GameFinished != null)
+            {
+                GameFinished.Invoke(this);
+            }
+        }
+
+        private void OnGameStarted()
+        {
+            if (GameStarted != null)
+            {
+                GameStarted.Invoke(this);
+            }
+        }
+
+        private void OnBoardUpdated()
+        {
+            if (BoardUpdated != null)
+            {
+                BoardUpdated.Invoke(m_GameBoard);
+            }
+        }
+
 
         public void InitializeGameSpecifications(Board.eBoardSizes i_BoardSizes, string i_Player1Name, string i_Player2Name, bool i_IsPc)
         {
