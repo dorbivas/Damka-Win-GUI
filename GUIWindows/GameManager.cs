@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 namespace GUIWindows
 {
@@ -21,21 +21,16 @@ namespace GUIWindows
         private GameLogic.eGameStatus m_GameStatus = GameLogic.eGameStatus.Ongoing;
         private Player.ePlayerType m_OpponentType;
         private Board.eBoardSizes m_BoardSize;
+        EventGameSettings egsf;
 
         private readonly FormGame r_FormGame = new FormGame();
         private readonly GameLogic r_Game;
 
         public void Run()
         {
-
-        }
-
-        private void attachFormEvents()
-        {
-            //Todo
-            //m_FormGame.SettingsFilled += m_FormGame_SettingsFilled;
-            //m_FormGame.MoveEnterd += m_FormGame_Moved;
-            //m_FormGame.MessageBoxAnswered += m_FormGame_MessageBoxAnswered;
+            attachGameEvents();
+            attachUIEvents();
+            r_FormGame.ShowDialog();
         }
 
         private void attachGameEvents()
@@ -55,42 +50,42 @@ namespace GUIWindows
 
         private void r_FormGame_SettingsFilled(object sender, EventArgs e)
         {
-            //EventGameSettings sf = new EventGameSettings
+            egsf = new EventGameSettings(FormSettings.);
 
             //r_Game.InitializeGameSpecifications();
         }
 
-        private void r_FormGame_Moved(object sender, EventArgs e)
+        private void r_FormGame_Moved(Move i_NextMove)
         {
+            if (Move.CheckIfUserMoveValid(ref i_NextMove, r_Game.CurrentPlayer.SkippingPossibleMoves, r_Game.CurrentPlayer.NormarlPossibleMoves))
+            {
+                MessageBox.Show("Invalid move!, please try again", "Error");
+            }
+            else
+            {
+                r_Game.ExecuteSingleTurn(i_NextMove);
+            }
+        }
+
+        private void r_FormGame_MessageBoxInteractions(object sender, EventArgs e)
+        {
+            MessageBoxYesNoEvent mbyne = e as MessageBoxYesNoEvent;
+
+            if (mbyne.IsMessageBoxClickedYes)
+            {
+               // r_Game.InitializeGameSpecifications(r_Game.Board.BoardSize);
+                
+            }
+            else
+            {
+                r_FormGame.Close();
+            }
 
         }
 
-        private void r_FormGame_SettingsFilled(object sender, EventArgs e)
-        {
-
-        }
-
-
-            private void r_GameEngine_BoardUpdated(Board i_Board)
+        private void r_GameEngine_BoardUpdated(Board i_Board)
         {
             //todo
-        }
-
-        private void r_FormGame_MoveEnterd(object sender, EventArgs e)
-        {
-            //TODO action
-
-            //MoveEnterdEventArgs me = e as MoveEnterdEventArgs;
-            //Move newMove = new Move(me.From, me.To);
-            //string errorMessage;
-            //bool isLegalMove;
-
-            //isLegalMove = m_AmericanCheckers.ImplementMove(newMove, out errorMessage);
-            //if (!isLegalMove)
-            //{
-            //    m_FormGame.ErrorMessageBox(errorMessage);
-            //}
-
         }
 
         private void r_GameEngine_BoardUpdated(object sender, EventArgs e)

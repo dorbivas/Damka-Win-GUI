@@ -1,108 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GUIWindows
+﻿namespace GUIWindows
 {
+    using GameEngine;
+    using System;
+
     public class EventGameSettings : EventArgs
     {
-        private readonly string r_PlayerXName;
-        private readonly string r_PlayerOName;
-        private readonly Board.eBoradSize r_BoardSize;
-        private readonly Player.ePlayerType r_PlayerOType;
+        private readonly string r_Player1Name;
+        private readonly string r_Player2Name;
+        private readonly Board.eBoardSizes r_BoardSize;
+        private readonly Player.ePlayerType r_OpponentType;
         private string m_CurrentPlayer;
-        private string m_PreviousPlayer;
-        private Player.ePlayerSign m_CurrentPlayerSign;
+        private string m_NextPlayer;
+        //private Player.ePlayerSign m_CurrentPlayerSign;
 
-        public EventGameDetailsArgs(string i_PlayerXName, string i_PlayerOName, Board.eBoradSize i_BoardSize, Player.ePlayerType i_PlayerOType)
+        public EventGameSettings(string i_Player1Name, string i_Player2Name, Board.eBoardSizes i_BoardSize, Player.ePlayerType i_Player2Type)
         {
-            r_PlayerXName = i_PlayerXName;
-            r_PlayerOName = i_PlayerOName;
+            r_Player1Name = i_Player1Name;
+            r_Player2Name = i_Player2Name;
             r_BoardSize = i_BoardSize;
-            r_PlayerOType = i_PlayerOType;
-            m_CurrentPlayer = r_PlayerXName;
-            m_CurrentPlayerSign = Player.ePlayerSign.XSign;
-            m_PreviousPlayer = r_PlayerOName;
+            r_OpponentType = i_Player2Type;
+            m_CurrentPlayer = r_Player1Name;
+            m_NextPlayer = r_Player2Name;
         }
 
-        public Board.eBoradSize BoardSize
+        public Board.eBoardSizes BoardSize
         {
-            get
-            {
-                return r_BoardSize;
-            }
+            get => r_BoardSize;
         }
 
-        public string PlayerOName
+        public string Player1Name
         {
-            get
-            {
-                return r_PlayerOName;
-            }
+            get => r_Player1Name;
         }
 
-        public string PlayerXName
+        public string Player2Name
         {
-            get
-            {
-                return r_PlayerXName;
-            }
+            get => r_Player2Name;
         }
+
 
         public void SetPlayers(string i_CurrentPlayer)
         {
             m_CurrentPlayer = i_CurrentPlayer;
-            m_PreviousPlayer = i_CurrentPlayer == r_PlayerOName ? r_PlayerXName : r_PlayerOName;
-            m_CurrentPlayerSign = i_CurrentPlayer == r_PlayerOName ? Player.ePlayerSign.OSign : Player.ePlayerSign.XSign;
+            m_NextPlayer = i_CurrentPlayer == r_Player2Name ? r_Player1Name : r_Player2Name;
         }
 
-        public Player.ePlayerType PlayerOType
+        public Player.ePlayerType Player2Type
         {
-            get
-            {
-                return r_PlayerOType;
-            }
+            get => r_OpponentType;
         }
 
         public string CurrentPlayer
         {
-            get
-            {
-                return m_CurrentPlayer;
-            }
-
-            set
-            {
-                m_CurrentPlayer = value;
-            }
+            get => m_CurrentPlayer;
+            set => m_CurrentPlayer = value;
         }
 
-        public string PreviousPlayer
+        public string NextPlayer
         {
-            get
-            {
-                return m_PreviousPlayer;
-            }
-
-            set
-            {
-                m_PreviousPlayer = value;
-            }
+            get => m_NextPlayer;
+            set => m_NextPlayer = value;
         }
-
-        public Player.ePlayerSign CurrentPlayerSign
-        {
-            get
-            {
-                return m_CurrentPlayerSign;
-            }
-
-            set
-            {
-                m_CurrentPlayerSign = value;
-            }
-        }
-
     }
+}

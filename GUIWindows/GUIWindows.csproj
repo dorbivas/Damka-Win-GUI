@@ -53,6 +53,7 @@
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="GameManager.cs" />
+    <Compile Include="MessageBoxYesNoEvent.cs" />
     <Compile Include="PictureBoxComponents.cs">
       <SubType>Component</SubType>
     </Compile>
