@@ -151,6 +151,7 @@ namespace GameEngine
 
                 OnBoardUpdated();
                 m_LastMove = io_ValidMoveFromUI;
+
             }
         }
 
@@ -178,7 +179,7 @@ namespace GameEngine
             OnPlayerSwitched();
         }
 
-        public void UpdateGameStatus(bool i_ExitGameFlag)
+        private void updateGameStatus(bool i_ExitGameFlag)
         {
             if (i_ExitGameFlag == true)
             {
@@ -203,12 +204,15 @@ namespace GameEngine
                     m_GameStatus = eGameStatus.Draw;
                 }
             }
+
+            if (m_GameStatus != eGameStatus.Ongoing)
+            {
+                OnGameFinished();
+            }
         }
 
         private eGameStatus decideWinner(Player i_Player)
         {
-            OnGameFinished();
-
             return i_Player.PlayerNumber == Player.ePlayerNumber.PlayerTwoO ?
                             eGameStatus.Player1XWin : eGameStatus.Player2OWin;
         }

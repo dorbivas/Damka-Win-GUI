@@ -81,7 +81,7 @@ namespace GUIWindows
         {
             GameLogic game = sender as GameLogic;
 
-            // r_FormGame.ContinuePlayingMessageBox(game); todo
+            r_FormGame.ContinuePlayingMessageBox(game);
         }
 
         private void r_GameEngine_SwitchedPlayers()
