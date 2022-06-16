@@ -130,7 +130,7 @@ namespace GameEngine
             switch (m_Type)
             {
                 case ePieceType.PieceO:
-                    shouldThePieceBeCrowned = m_PiecePos.Row == i_Board.BoardSize;
+                    shouldThePieceBeCrowned = m_PiecePos.Row == i_Board.BoardSize - 1;
                     break;
                 case ePieceType.PieceX:
                     shouldThePieceBeCrowned = m_PiecePos.Row == 0;
