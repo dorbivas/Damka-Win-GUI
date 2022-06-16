@@ -52,7 +52,7 @@
             get => sr_EmptyCellImage;
         }
 
-        public static string ResourcesFolderPath
+        public static string SourcesPath
         {
             get => sr_SourcesPath;
         }

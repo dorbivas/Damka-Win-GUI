@@ -24,7 +24,7 @@ namespace GUIWindows
         //EventGameSettings egsf;
 
         private readonly FormGame r_FormGame = new FormGame();
-        private readonly GameLogic r_Game;
+        private readonly GameLogic r_Game = new GameLogic();
 
         public void Run()
         {

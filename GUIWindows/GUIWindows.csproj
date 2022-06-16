@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventGameSettings.cs" />
+    <Compile Include="EventMove.cs" />
     <Compile Include="FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +56,9 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="MessageBoxYesNoEvent.cs" />
     <Compile Include="PictureBoxComponents.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PictureBoxPiece.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

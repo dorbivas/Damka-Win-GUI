@@ -109,6 +109,14 @@ namespace GameEngine
             }
         }
 
+        private void OnPlayerSwitched()
+        {
+            if (PlayerSwitched != null)
+            {
+                PlayerSwitched.Invoke();
+            }
+        }
+
 
         public void InitializeGameSpecifications(Board.eBoardSizes i_BoardSizes, string i_Player1Name, string i_Player2Name, bool i_IsPc)
         {
@@ -166,6 +174,7 @@ namespace GameEngine
             io_NextPlayer = temp;
             io_CurrentPlayer.UpdatePlayerMoves(m_GameBoard);
             io_NextPlayer.UpdatePlayerMoves(m_GameBoard);
+            OnPlayerSwitched();
         }
 
         public void UpdateGameStatus(bool i_ExitGameFlag)
