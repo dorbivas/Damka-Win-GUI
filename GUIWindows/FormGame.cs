@@ -18,8 +18,6 @@ namespace GUIWindows
         private const int k_StartingPictureBoxX = 0;
         private const int k_StartingPictureBoxY = 40;
         private const int k_Suspension = 130;
-
-
         private readonly FormSettings r_FormSettings = new FormSettings();
         private readonly Label labelPlayer1 = new Label();
         private readonly Label labelPlayer2 = new Label();
@@ -28,6 +26,7 @@ namespace GUIWindows
         private bool isSecondClick = false;
         private PictureBoxPiece m_PictureBoxPressed;
         private Move m_EnteredMove;
+
         public FormGame()
         {
             InitializeComponent();
@@ -43,7 +42,6 @@ namespace GUIWindows
             foreach (PictureBoxPiece piece in m_PictureBoxBoard)
             {
                 piece.BackColor = Color.Black;
-                //piece.BackgroundImage = GUIWindows.Resources; image TODO
                 piece.Image = null;
 
             }
@@ -51,7 +49,6 @@ namespace GUIWindows
 
         private void initialzeNewGameForm()
         {
-            //initializeGameDetails();
             setBoardFormSize();
             initializeBoardPictureBox();
         }
@@ -79,7 +76,6 @@ namespace GUIWindows
 
                 isNewLine = true;
             }
-         
         }
 
         public void UpdatePictureBoxBoard(Board i_Board)
@@ -109,6 +105,14 @@ namespace GUIWindows
                                 enablePiece = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX;
                                 cellImage = PieceType == Piece.ePieceType.PieceX ? Sources.BlackPiece : Sources.BlackKingPiece;
                                 break;
+                            case Piece.ePieceType.KingO:
+                                enablePiece = true;
+                                cellImage = Sources.WhiteKingPiece;
+                                break;
+                            case Piece.ePieceType.KingX:
+                                enablePiece = true;
+                                cellImage = Sources.BlackKingPiece;
+                                break;
                             default:
                                 break;
                         }
@@ -118,7 +122,7 @@ namespace GUIWindows
                         enablePiece = false;
                         cellImage = Sources.NullCell;
                     }
-                    
+
                     m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePiece, PieceType);
                 }
 
@@ -129,7 +133,6 @@ namespace GUIWindows
             }
         }
 
-        //TODO fix it
         private void setPictureBox(PictureBoxPiece io_CurrentPictureBox)
         {
             io_CurrentPictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
@@ -173,7 +176,6 @@ namespace GUIWindows
                 if (piecePressed != null)
                 {
                     m_PictureBoxPressed = piecePressed;
-                    //m_PictureBoxPressed.Enabled = false;
                     m_PictureBoxPressed.BorderStyle = BorderStyle.Fixed3D;
                     isSecondClick = true;
                 }
@@ -187,13 +189,10 @@ namespace GUIWindows
                         m_EnteredMove = new Move(m_PictureBoxPressed.GetPosition, piecePressed.GetPosition);
                         OnMoved(m_EnteredMove);
                     }
-                    else
-                    {
-                        m_PictureBoxPressed.BorderStyle = BorderStyle.None;
-                        //m_PictureBoxPressed.Enabled = true;
-                        m_PictureBoxPressed = null;
-                        isSecondClick = false;
-                    }
+
+                    m_PictureBoxPressed.BorderStyle = BorderStyle.None;
+                    m_PictureBoxPressed = null;
+                    isSecondClick = false;
                 }
             }
         }

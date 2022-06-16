@@ -199,7 +199,7 @@ namespace GameEngine
                     }
                     else
                     {
-                        skipNextPosition = new Position(nextPiecePosition.Position.Row + ((int)i_Piece.Direction), (nextPiecePosition.Position.Col * 2) - i_Piece.Position.Col);
+                        skipNextPosition = new Position(nextPiecePosition.Position.Row*2 - i_Piece.Position.Row, (nextPiecePosition.Position.Col * 2) - i_Piece.Position.Col);
                         if (i_Board.CheckIfOutOfBounds(skipNextPosition) == false && i_Board.GetPieceByRef(skipNextPosition).CheckIfThePieceEmpty())
                         {
                             nextMove = new Move(i_Piece.Position, skipNextPosition, nextPosition);
