@@ -6,8 +6,8 @@
         private static readonly string sr_WhitePieceImage = "WhitePiece.png";
         private static readonly string sr_WhiteKingImage = "WhiteKing.png";
         private static readonly string sr_BlackPieceImage = "BlackPiece.png";
-        private static readonly string sr_BlackKingImage = "‏‏BlackKing.png";
-        private static readonly string sr_NullCelllImage = "‏‏NullCell.png";
+        private static readonly string sr_BlackKingImage = "BlackKing.png";
+        private static readonly string sr_NullCelllImage = "NullCell.png";
         private static readonly string sr_EmptyCellImage = "EmptyCell.png";
         private static readonly string sr_PiecePressedImage = "PiecePressed.png";
         private static readonly string sr_SourcesPath;
@@ -42,7 +42,7 @@
             get => sr_PiecePressedImage;
         }
 
-        public static string Disabled
+        public static string NullCell
         {
             get => sr_NullCelllImage;
         }
@@ -55,6 +55,11 @@
         public static string SourcesPath
         {
             get => sr_SourcesPath;
+        }
+
+        public static string BackgroundImage
+        {
+            get => sr_EmptyCellImage;
         }
     }
 }

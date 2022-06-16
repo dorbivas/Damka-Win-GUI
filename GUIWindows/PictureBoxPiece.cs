@@ -26,7 +26,9 @@ namespace GUIWindows
             this.Image = Image.FromFile(filePath);
             this.Name = Enum.GetName(typeof(Piece.ePieceType), i_PieceType);
             this.Enabled = i_Enable;
+            this.BackgroundImage = Image.FromFile(Path.Combine(Sources.SourcesPath, Sources.BackgroundImage));
         }
+
 
         public Position GetPosition
         {

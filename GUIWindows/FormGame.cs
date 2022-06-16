@@ -110,13 +110,16 @@ namespace GUIWindows
                                 cellImage = PieceType == Piece.ePieceType.PieceX ? Sources.BlackPiece : Sources.BlackKingPiece;
                                 break;
                             default:
-                                enablePiece = false;
-                                cellImage = Sources.Disabled;
                                 break;
                         }
-
-                        m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePiece, PieceType);
                     }
+                    else
+                    {
+                        enablePiece = false;
+                        cellImage = Sources.NullCell;
+                    }
+                    
+                    m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePiece, PieceType);
                 }
 
                 if (m_EventGameSettings.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
