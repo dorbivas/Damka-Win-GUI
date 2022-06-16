@@ -85,8 +85,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\BlackKing.png" />
+    <Content Include="Resources\BlackPiece.png" />
+    <Content Include="Resources\BlackPieceG.png" />
+    <Content Include="Resources\EmptyCell.png" />
+    <Content Include="Resources\NullCell.png" />
+    <Content Include="Resources\PiecePressed.png" />
+    <Content Include="Resources\WhiteKing.png" />
+    <Content Include="Resources\WhitePiece.png" />
     <Content Include="Todi.txt" />
-    <None Include="Resources\background.png" />
     <Content Include="Sources\gk.jpg" />
   </ItemGroup>
   <ItemGroup>
