@@ -12,6 +12,8 @@
         private  Player.ePlayerNumber m_CurrentPlayerNumber;
         private string m_CurrentPlayer;
         private string m_NextPlayer;
+        private int m_Player1Score = 0;
+        private int m_Player2Score = 0;
 
         public EventGameSettings(string i_Player1Name, string i_Player2Name, Board.eBoardSizes i_BoardSize, Player.ePlayerType i_Player2Type)
         {
@@ -68,5 +70,7 @@
             get => m_NextPlayer;
             set => m_NextPlayer = value;
         }
+        public int Player2Score { get => m_Player2Score; set => m_Player2Score = value; }
+        public int Player1Score { get => m_Player1Score; set => m_Player1Score = value; }
     }
 }

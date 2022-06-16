@@ -151,7 +151,7 @@ namespace GameEngine
 
                 OnBoardUpdated();
                 m_LastMove = io_ValidMoveFromUI;
-
+                updateGameStatus(false);
             }
         }
 

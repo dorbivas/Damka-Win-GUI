@@ -61,7 +61,10 @@ namespace GUIWindows
 
             if (mbyne.IsMessageBoxClickedYes)
             {
-                // r_Game.InitializeGameSpecifications(r_Game.Board.BoardSize);
+                r_GameEngine_GameStarted(sender);
+                //r_FormGame.ResetBoard();
+                r_FormGame.InitialzeNewGameForm();
+                r_FormGame.UpdatePictureBoxBoard(r_Game.Board);
 
             }
             else
@@ -81,7 +84,25 @@ namespace GUIWindows
         {
             GameLogic game = sender as GameLogic;
 
-            r_FormGame.ContinuePlayingMessageBox(game);
+            r_FormGame.CreateYesNoMessageBox(EndSessionResult(game.GameStatus), "Checkers");
+        }
+
+        private string EndSessionResult(GameEngine.GameLogic.eGameStatus i_Result)
+        {
+            StringBuilder endGameMessage = new StringBuilder();
+
+            if (i_Result == GameEngine.GameLogic.eGameStatus.Draw)
+            { 
+                endGameMessage.Append("Tie!");
+            }
+            else
+            {
+                endGameMessage.Append(string.Format("{0} Won!{1}", r_Game.NextPlayer.Name, Environment.NewLine));
+            }
+
+            endGameMessage.Append("Do You Want To Play Again?");
+
+            return endGameMessage.ToString();
         }
 
         private void r_GameEngine_SwitchedPlayers()

@@ -38,15 +38,15 @@ namespace GUIWindows
 
         public void ResetBoard() // TODO
         {
-            foreach (PictureBoxPiece piece in m_PictureBoxBoard)
-            {
-                piece.BackColor = Color.Black;
-                piece.Image = null;
+            //foreach (PictureBoxPiece piece in m_PictureBoxBoard)
+            //{
+            //    piece.BackColor = Color.Black;
+            //    piece.Image = null;
+            //}
 
-            }
         }
 
-        private void initialzeNewGameForm()
+        public void InitialzeNewGameForm()
         {
             setBoardFormSize();
             initializeBoardPictureBox();
@@ -218,32 +218,27 @@ namespace GUIWindows
                 r_FormSettings.Player2Name,
                 r_FormSettings.BoardSize,
                 r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
-            //setPlayerLables();
-            initialzeNewGameForm();
+            setPlayersLabels(m_EventGameSettings.Player1Score, m_EventGameSettings.Player2Score);
+            InitialzeNewGameForm();
             OnGameSettingsFiled(m_EventGameSettings);
         }
 
-        private void setPlayerLables()
+        private void setPlayersLabels(int i_Player1Score, int i_Player2Score)
         {
-            int StartingScore = 0;
+            if (r_FormSettings.IsPlayer2PC)//r_FormSettings.Player1Name == "[Deep-blue Computer]")
+            {
+                labelPlayer2.Text = string.Format("{0}: Deep-blue AI", i_Player2Score);
+            }
+            else
+            {
+                this.labelPlayer2.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, i_Player2Score);
+            }
 
-            //setPlayersLabelPosition();
-            labelPlayer1.Location = new Point(50, 50);
-            labelPlayer2.Location = new Point(50, 50);
-            /**/
-            labelPlayer1.Font = new Font(labelPlayer1.Font, FontStyle.Bold & FontStyle.Underline);
-            labelPlayer2.Font = new Font(labelPlayer2.Font, FontStyle.Bold & FontStyle.Underline);
-            labelPlayer1.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, StartingScore);
-            labelPlayer2.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, StartingScore);
-
-            this.Controls.Add(labelPlayer1);
-            this.Controls.Add(labelPlayer2);
+            labelPlayer1.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, i_Player1Score);
+            labelPlayer1.ForeColor = Color.BlanchedAlmond;
+            labelPlayer2.ForeColor = Color.Black;
         }
 
-        private void setPlayersLabelPosition()
-        {
-            throw new NotImplementedException();
-        }
 
         private void FormGame_OnLoad(object sender, EventArgs e)
         {
@@ -258,20 +253,51 @@ namespace GUIWindows
 
         }
 
+        //public void ContinuePlayingMessageBox(game)
+        //{
+
+        //}
+
+        public void CreateYesNoMessageBox(string i_MessageBoxString, string i_Caption)
+        {
+            DialogResult dialogResult = MessageBox.Show(i_MessageBoxString, i_Caption, MessageBoxButtons.YesNo);
+            MessageBoxYesNoEvent mbyne;
+            bool isMessageBoxAnswerIsYes = false;
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                isMessageBoxAnswerIsYes = true;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                isMessageBoxAnswerIsYes = false;
+            }
+
+            mbyne = new MessageBoxYesNoEvent(isMessageBoxAnswerIsYes);
+            OnMessageBoxYesNoAnswered(mbyne);
+        }
+
+        private void OnMessageBoxYesNoAnswered(MessageBoxYesNoEvent mbyne)
+        {
+            if (MessageBoxInteractions != null)
+            {
+                MessageBoxInteractions.Invoke(this, mbyne);
+            }
+        }
+
+
         protected virtual void OnGameSettingsFiled(EventGameSettings egs)
         {
             if (SettingsFilled != null)
             {
                 SettingsFilled(this, egs);
             }
-
         }
 
         private void OnMoved(Move i_move)
         {
             if (Moved != null)
             {
-
                 Moved.Invoke(i_move);
             }
         }
