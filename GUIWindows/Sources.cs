@@ -5,7 +5,7 @@
     {
         private static readonly string sr_WhitePieceImage = "WhitePiece.png";
         private static readonly string sr_WhiteKingImage = "WhiteKing.png";
-        private static readonly string sr_BlackPieceImage = "BlackPieceG.png";
+        private static readonly string sr_BlackPieceImage = "BlackPiece.png";
         private static readonly string sr_BlackKingImage = "‏‏BlackKing.png";
         private static readonly string sr_NullCelllImage = "‏‏NullCell.png";
         private static readonly string sr_EmptyCellImage = "EmptyCell.png";

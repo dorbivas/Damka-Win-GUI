@@ -26,7 +26,6 @@ namespace GUIWindows
         private PictureBoxPiece[,] m_PictureBoxBoard;
         private EventGameSettings m_EventGameSettings;
         private bool isSecondClick = false;
-        //private Position m_from;
         private PictureBoxPiece m_PictureBoxPressed;
         private Move m_EnteredMove;
         public FormGame()
@@ -52,7 +51,7 @@ namespace GUIWindows
 
         private void initialzeNewGameForm()
         {
-            // initializeGameDetails();
+            //initializeGameDetails();
             setBoardFormSize();
             initializeBoardPictureBox();
         }
@@ -62,6 +61,7 @@ namespace GUIWindows
             bool isNewLine = false, isFirstPictureBox = true;
             PictureBox lastlPiece = new PictureBox();
             PictureBoxPiece newPiece;
+            m_PictureBoxBoard = new PictureBoxPiece[(int)m_EventGameSettings.BoardSize, (int)m_EventGameSettings.BoardSize];
 
             for (int i = 0; i < ((int)m_EventGameSettings.BoardSize); i++)
             {
@@ -79,6 +79,7 @@ namespace GUIWindows
 
                 isNewLine = true;
             }
+            
         }
 
         public void UpdatePictureBoxBoard(Board i_Board)
@@ -133,22 +134,15 @@ namespace GUIWindows
         //}
 
         //TODO fix it
-        private void setPictureBox(PictureBoxPiece i_CurrentPictureBox)
+        private void setPictureBox(PictureBoxPiece io_CurrentPictureBox)
         {
-            i_CurrentPictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
-            i_CurrentPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            setPictureBoxSize(i_CurrentPictureBox);
-            i_CurrentPictureBox.Enabled = false;
-            i_CurrentPictureBox.Click += pictureBox_Click;
+            io_CurrentPictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
+            io_CurrentPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            io_CurrentPictureBox.Enabled = false;
+            io_CurrentPictureBox.Click += pictureBox_Click;
         }
 
-        private void setPictureBoxSize(PictureBoxPiece i_CurrentPictureBox)
-        {
-            i_CurrentPictureBox.Height = k_PictureBoxSize;
-            i_CurrentPictureBox.Width = k_PictureBoxSize;
-        }
-
-        private void setPictureBoxLocation(PictureBoxPiece i_CurrentPictureBox, bool i_IsNewLine,
+        private void setPictureBoxLocation(PictureBoxPiece io_CurrentPictureBox, bool i_IsNewLine,
                                            bool i_IsFirstPictureBox, PictureBox i_LastlPiece)
         {
             Point newLocation;
@@ -171,7 +165,7 @@ namespace GUIWindows
                 }
             }
 
-            i_CurrentPictureBox.Location = newLocation;
+            io_CurrentPictureBox.Location = newLocation;
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
@@ -230,9 +224,6 @@ namespace GUIWindows
                 r_FormSettings.Player2Name,
                 r_FormSettings.BoardSize,
                 r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
-            //todo handle event setting filled
-            //setBoardSize();
-            //creatPiecesPictureMatrix();
             //setPlayerLables();
             initialzeNewGameForm();
             OnGameSettingsFiled(m_EventGameSettings);

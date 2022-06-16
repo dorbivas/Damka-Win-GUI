@@ -123,6 +123,7 @@ namespace GameEngine
             updateBoardSize(i_BoardSizes);
             updatePlayersDetails(i_Player1Name, i_Player2Name, i_IsPc);
             OnGameStarted();
+            OnBoardUpdated();
         }
 
         public void ExecuteSingleTurn(Move io_ValidMoveFromUI)
