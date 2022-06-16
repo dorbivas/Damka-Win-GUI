@@ -9,7 +9,6 @@ namespace GUIWindows
 {
     public partial class FormGame : Form
     {
-
         public event EventHandler SettingsFilled, MessageBoxInteractions;
         public event Action<Move> Moved;
         private const int k_PictureBoxSize = 50;
@@ -250,11 +249,6 @@ namespace GUIWindows
         {
             r_FormSettings.FormClosed += m_FormSettings_Closed;
             r_FormSettings.ShowDialog();
-        }
-
-        private void creatPiecesPictureMatrix()
-        {
-            throw new NotImplementedException();
         }
 
         private void setBoardFormSize()
