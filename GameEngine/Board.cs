@@ -39,6 +39,11 @@ namespace GameEngine
             return i_SizeToCheck == Board.eBoardSizes.Small || i_SizeToCheck == Board.eBoardSizes.Medium || i_SizeToCheck == Board.eBoardSizes.Large;
         }
 
+        public static bool IsDiffrentType(int i_First, int i_Second)
+        {
+            return (i_First % 2) != (i_Second % 2);
+        }
+
         public void ArrangesPiecesOnBoard(Player i_PlayerOne, Player i_PlayerTwo)
         {
             for (int i = 0; i < r_Size; i++)
@@ -113,6 +118,11 @@ namespace GameEngine
         public ref Piece GetPieceByRef(Position i_Position)
         {
             return ref r_Board[i_Position.Row, i_Position.Col];
+        }
+
+        public Piece.ePieceType GetPieceType(int i_Row, int i_Col)
+        {
+            return r_Board[i_Row, i_Col].PieceType;
         }
 
         public void SwapPiecesbyPosition(ref Piece io_PieceOne, ref Piece io_PieceTwo)

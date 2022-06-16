@@ -9,9 +9,9 @@
         private readonly string r_Player2Name;
         private readonly Board.eBoardSizes r_BoardSize;
         private readonly Player.ePlayerType r_OpponentType;
+        private readonly Player.ePlayerNumber m_CurrentPlayerNumber;
         private string m_CurrentPlayer;
         private string m_NextPlayer;
-        //private Player.ePlayerSign m_CurrentPlayerSign;
 
         public EventGameSettings(string i_Player1Name, string i_Player2Name, Board.eBoardSizes i_BoardSize, Player.ePlayerType i_Player2Type)
         {
@@ -21,6 +21,7 @@
             r_OpponentType = i_Player2Type;
             m_CurrentPlayer = r_Player1Name;
             m_NextPlayer = r_Player2Name;
+            m_CurrentPlayerNumber = Player.ePlayerNumber.PlayerOneX;
         }
 
         public Board.eBoardSizes BoardSize
@@ -48,6 +49,11 @@
         public Player.ePlayerType Player2Type
         {
             get => r_OpponentType;
+        }
+
+        public Player.ePlayerNumber CurrentPlayerNumber
+        {
+            get => m_CurrentPlayerNumber;
         }
 
         public string CurrentPlayer

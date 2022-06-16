@@ -32,7 +32,7 @@
             get => sr_BlackPieceImage;
         }
 
-        public static string BlackKingPawn
+        public static string BlackKingPiece
         {
             get => sr_BlackKingImage;
         }

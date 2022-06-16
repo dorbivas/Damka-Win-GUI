@@ -85,7 +85,7 @@ namespace GUIWindows
 
         private void r_GameEngine_BoardUpdated(Board i_Board)
         {
-            //todo
+            r_FormGame.UpdatePictureBoxBoard(i_Board);
         }
 
         private void r_GameEngine_BoardUpdated(object sender, EventArgs e)

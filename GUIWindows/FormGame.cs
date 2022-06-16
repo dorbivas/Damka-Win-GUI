@@ -1,13 +1,9 @@
 ﻿using GameEngine;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text;
+
 
 namespace GUIWindows
 {
@@ -21,8 +17,8 @@ namespace GUIWindows
         private const int k_ExtraHeight = 100;
         private const int k_StartingPictureBoxX = 0;
         private const int k_StartingPictureBoxY = 40;
-        private const int k_WidthExtention = 20;
-        private const int k_HeightExtention = 80;
+        private const int k_Suspension = 130;
+
 
         private readonly FormSettings r_FormSettings = new FormSettings();
         private readonly Label labelPlayer1 = new Label();
@@ -50,66 +46,112 @@ namespace GUIWindows
                 piece.BackColor = Color.Black;
                 //piece.BackgroundImage = GUIWindows.Resources; image TODO
                 piece.Image = null;
-               
+
             }
         }
 
-        public void StartNewSession()
+        private void initialzeNewGameForm()
         {
-
+            // initializeGameDetails();
+            setBoardFormSize();
+            initializeBoardPictureBox();
         }
 
-        //TODO
         private void initializeBoardPictureBox()
         {
             bool isNewLine = false, isFirstPictureBox = true;
-            PictureBox lastPictureBoxInMatrix = new PictureBox();
-            PictureBoxPiece newPictureBox;
+            PictureBox lastlPiece = new PictureBox();
+            PictureBoxPiece newPiece;
 
             for (int i = 0; i < ((int)m_EventGameSettings.BoardSize); i++)
             {
                 for (int j = 0; j < ((int)m_EventGameSettings.BoardSize); j++)
                 {
-                    newPictureBox = new PictureBoxPiece(i, j);
-                    intializePictureBox(newPictureBox);
-                    m_PictureBoxBoard[i, j] = newPictureBox;
-                    this.Controls.Add(newPictureBox);
+                    newPiece = new PictureBoxPiece(i, j);
+                    setPictureBoxLocation(newPiece, isNewLine, isFirstPictureBox, lastlPiece);
+                    setPictureBox(newPiece);
+                    m_PictureBoxBoard[i, j] = newPiece;
+                    Controls.Add(newPiece);
                     isNewLine = false;
                     isFirstPictureBox = false;
-                    lastPictureBoxInMatrix = newPictureBox;
+                    lastlPiece = newPiece;
                 }
 
                 isNewLine = true;
             }
         }
 
+        public void UpdatePictureBoxBoard(Board i_Board)
+        {
+            Piece.ePieceType PieceType = Piece.ePieceType.Empty;
+            bool enablePiece = false;
+            string cellImage = string.Empty;
+
+            for (int i = 0; i < i_Board.BoardSize; i++)
+            {
+                for (int j = 0; j < i_Board.BoardSize; j++)
+                {
+                    PieceType = i_Board.GetPieceType(i, j);
+                    if (Board.IsDiffrentType(i, j))
+                    {
+                        switch (PieceType)
+                        {
+                            case Piece.ePieceType.Empty:
+                                enablePiece = true;
+                                cellImage = Sources.Empty;
+                                break;
+                            case Piece.ePieceType.PieceO:
+                                enablePiece = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerTwoO;
+                                cellImage = PieceType == Piece.ePieceType.PieceO ? Sources.WhitePiece : Sources.WhiteKingPiece;
+                                break;
+                            case Piece.ePieceType.PieceX:
+                                enablePiece = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX;
+                                cellImage = PieceType == Piece.ePieceType.PieceX ? Sources.BlackPiece : Sources.BlackKingPiece;
+                                break;
+                            default:
+                                enablePiece = false;
+                                cellImage = Sources.Disabled;
+                                break;
+                        }
+
+                        m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePiece, PieceType);
+                    }
+                }
+
+                if (m_EventGameSettings.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
+                {
+                    System.Threading.Thread.Sleep(k_Suspension);
+                }
+            }
+        }
+
+        //private void initializeGameDetails()
+        //{
+        //    string oPlayerName = r_FormSettings.Player1Name == r_FormSettings. ? Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer) : m_FormGameSettings.OPlayerName;
+
+        //    m_EventGameSettings = new EventGameSettings(m_FormGameSettings.XPlayerName, oPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
+        //}
+
         //TODO fix it
-        private void intializePictureBox(PictureBoxPiece i_CurrentPictureBox)
+        private void setPictureBox(PictureBoxPiece i_CurrentPictureBox)
         {
             i_CurrentPictureBox.Size = new Size(k_PictureBoxSize, k_PictureBoxSize);
-            setPictureBoxLocation(newPictureBox, isNewLine, isFirstPictureBox, lastPictureBoxInMatrix);
             i_CurrentPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            setPictureBoxFigure(i_CurrentPictureBox);
+            setPictureBoxSize(i_CurrentPictureBox);
             i_CurrentPictureBox.Enabled = false;
             i_CurrentPictureBox.Click += pictureBox_Click;
         }
 
-        private void setPictureBoxFigure(PictureBoxPiece i_CurrentPictureBox)
+        private void setPictureBoxSize(PictureBoxPiece i_CurrentPictureBox)
         {
             i_CurrentPictureBox.Height = k_PictureBoxSize;
             i_CurrentPictureBox.Width = k_PictureBoxSize;
         }
 
-        private void setPictureBoxLocation(
-            PictureBoxPiece i_CurrentPictureBox,
-            bool i_NewLine,
-            bool i_IsFirstPictureBox,
-            PictureBox i_LastPictureBoxInMatrix)
+        private void setPictureBoxLocation(PictureBoxPiece i_CurrentPictureBox, bool i_IsNewLine,
+                                           bool i_IsFirstPictureBox, PictureBox i_LastlPiece)
         {
             Point newLocation;
-            int pictureBoxMatrixMaxLine = ((int)m_EventGameSettings.BoardSize) - 1;
-            int pictureBoxMatrixMaxCol = ((int)m_EventGameSettings.BoardSize) - 1;
 
             if (i_IsFirstPictureBox)
             {
@@ -117,15 +159,15 @@ namespace GUIWindows
             }
             else
             {
-                newLocation = i_LastPictureBoxInMatrix.Location;
-                if (!i_NewLine)
+                newLocation = i_LastlPiece.Location;
+                if (!i_IsNewLine)
                 {
-                    newLocation.Offset(i_LastPictureBoxInMatrix.Width, 0);
+                    newLocation.Offset(i_LastlPiece.Width, 0);
                 }
                 else
                 {
                     newLocation.X = k_StartingPictureBoxX;
-                    newLocation.Offset(0, i_LastPictureBoxInMatrix.Height);
+                    newLocation.Offset(0, i_LastlPiece.Height);
                 }
             }
 
@@ -192,6 +234,7 @@ namespace GUIWindows
             //setBoardSize();
             //creatPiecesPictureMatrix();
             //setPlayerLables();
+            initialzeNewGameForm();
             OnGameSettingsFiled(m_EventGameSettings);
         }
 
@@ -228,7 +271,7 @@ namespace GUIWindows
             throw new NotImplementedException();
         }
 
-        private void setBoardSize()
+        private void setBoardFormSize()
         {
             this.Size = new Size(((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraWidth,
                                  ((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraHeight);
@@ -237,7 +280,7 @@ namespace GUIWindows
 
         protected virtual void OnGameSettingsFiled(EventGameSettings egs)
         {
-            if(SettingsFilled != null)
+            if (SettingsFilled != null)
             {
                 SettingsFilled(this, egs);
             }
@@ -252,9 +295,7 @@ namespace GUIWindows
             }
         }
 
-        
-
-        private void OnPopUpBox( )
+        private void OnPopUpBox()
         {
             throw new NotImplementedException();
         }
