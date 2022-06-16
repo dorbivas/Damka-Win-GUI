@@ -9,7 +9,7 @@
         private readonly string r_Player2Name;
         private readonly Board.eBoardSizes r_BoardSize;
         private readonly Player.ePlayerType r_OpponentType;
-        private readonly Player.ePlayerNumber m_CurrentPlayerNumber;
+        private  Player.ePlayerNumber m_CurrentPlayerNumber;
         private string m_CurrentPlayer;
         private string m_NextPlayer;
 
@@ -54,6 +54,7 @@
         public Player.ePlayerNumber CurrentPlayerNumber
         {
             get => m_CurrentPlayerNumber;
+            set => m_CurrentPlayerNumber = value;
         }
 
         public string CurrentPlayer

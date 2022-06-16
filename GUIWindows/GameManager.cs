@@ -57,7 +57,7 @@ namespace GUIWindows
 
         private void r_FormGame_Moved(Move i_NextMove)
         {
-            if (Move.CheckIfUserMoveValid(ref i_NextMove, r_Game.CurrentPlayer.SkippingPossibleMoves, r_Game.CurrentPlayer.NormarlPossibleMoves))
+            if (!Move.CheckIfUserMoveValid(ref i_NextMove, r_Game.CurrentPlayer.SkippingPossibleMoves, r_Game.CurrentPlayer.NormarlPossibleMoves))
             {
                 MessageBox.Show("Invalid move!, please try again", "Error");
             }
@@ -105,7 +105,7 @@ namespace GUIWindows
 
         private void r_GameEngine_SwitchedPlayers()
         {
-            //r_FormGame.SwitchPlayers();
+            r_FormGame.SwitchPlayers();
         }
 
         private void r_GameEngine_GameStarted(object sender)

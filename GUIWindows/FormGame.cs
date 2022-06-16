@@ -79,7 +79,7 @@ namespace GUIWindows
 
                 isNewLine = true;
             }
-            
+         
         }
 
         public void UpdatePictureBoxBoard(Board i_Board)
@@ -129,13 +129,6 @@ namespace GUIWindows
             }
         }
 
-        //private void initializeGameDetails()
-        //{
-        //    string oPlayerName = r_FormSettings.Player1Name == r_FormSettings. ? Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer) : m_FormGameSettings.OPlayerName;
-
-        //    m_EventGameSettings = new EventGameSettings(m_FormGameSettings.XPlayerName, oPlayerName, m_FormGameSettings.BoardSize, m_FormGameSettings.PlayerOType);
-        //}
-
         //TODO fix it
         private void setPictureBox(PictureBoxPiece io_CurrentPictureBox)
         {
@@ -180,7 +173,7 @@ namespace GUIWindows
                 if (piecePressed != null)
                 {
                     m_PictureBoxPressed = piecePressed;
-                    m_PictureBoxPressed.Enabled = false;
+                    //m_PictureBoxPressed.Enabled = false;
                     m_PictureBoxPressed.BorderStyle = BorderStyle.Fixed3D;
                     isSecondClick = true;
                 }
@@ -196,9 +189,9 @@ namespace GUIWindows
                     }
                     else
                     {
-                        m_PictureBoxPressed = null;
-                        m_PictureBoxPressed.Enabled = true;
                         m_PictureBoxPressed.BorderStyle = BorderStyle.None;
+                        //m_PictureBoxPressed.Enabled = true;
+                        m_PictureBoxPressed = null;
                         isSecondClick = false;
                     }
                 }
@@ -285,6 +278,7 @@ namespace GUIWindows
         {
             if (Moved != null)
             {
+
                 Moved.Invoke(i_move);
             }
         }
@@ -294,8 +288,16 @@ namespace GUIWindows
             throw new NotImplementedException();
         }
 
+        public void SwitchPlayers()
+        {
+            string playerNameSaver = m_EventGameSettings.CurrentPlayer;
+
+            m_EventGameSettings.CurrentPlayer = m_EventGameSettings.NextPlayer;
+            m_EventGameSettings.NextPlayer = playerNameSaver;
+            m_EventGameSettings.CurrentPlayerNumber = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX ? Player.ePlayerNumber.PlayerTwoO : Player.ePlayerNumber.PlayerOneX;
+            //TODO
+            //this.labelPlayer1Name.ForeColor = this.labelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+            //this.labelPlayer2Name.ForeColor = this.labelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
+        }
     }
-
-
-
 }
