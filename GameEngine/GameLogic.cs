@@ -114,6 +114,7 @@ namespace GameEngine
         {
             updateBoardSize(i_BoardSizes);
             updatePlayersDetails(i_Player1Name, i_Player2Name, i_IsPc);
+            OnGameStarted();
         }
 
         public void ExecuteSingleTurn(Move io_ValidMoveFromUI)
@@ -139,6 +140,7 @@ namespace GameEngine
                     switchPlayers(ref m_CurrentPlayer, ref m_NextPlayer);
                 }
 
+                OnBoardUpdated();
                 m_LastMove = io_ValidMoveFromUI;
             }
         }
@@ -195,6 +197,8 @@ namespace GameEngine
 
         private eGameStatus decideWinner(Player i_Player)
         {
+            OnGameFinished();
+
             return i_Player.PlayerNumber == Player.ePlayerNumber.PlayerTwoO ?
                             eGameStatus.Player1XWin : eGameStatus.Player2OWin;
         }

@@ -53,6 +53,10 @@ namespace GUIWindows
 
         }
 
+
+
+
+
         public void m_FormSettings_Closed(object sender, FormClosedEventArgs e)
         {
             if (string.IsNullOrEmpty(r_FormSettings.Player1Name))

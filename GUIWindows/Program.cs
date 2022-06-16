@@ -12,11 +12,13 @@ namespace GUIWindows
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormSettings());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new FormSettings());
 
-            Application.Run(new FormGame());
+            //Application.Run(new FormGame());
+            GameManager game = new GameManager();
+            game.Run();
         }
     }
 }

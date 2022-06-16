@@ -38,7 +38,7 @@ namespace GUIWindows
             r_Game.GameStarted += r_GameEngine_GameStarted;
             r_Game.GameFinished += r_GameEngine_GameFinished;
             r_Game.BoardUpdated += r_GameEngine_BoardUpdated;
-            r_Game.PlayerSwitched += r_GameEngine_SwitchedPlayers;
+            r_Game.PlayerSwitched += r_GameEngine_SwitchedPlayers;  //TODO - do we need it?
         }
 
         private void attachUIEvents()
@@ -115,7 +115,7 @@ namespace GUIWindows
             //r_Game.InitializeGameSpecifications(m_BoardSize, m_Player1Name, m_Player2Name, (m_OpponentType == Player.ePlayerType.Computer) ? true : false);
             r_Game.ResetGameEngine();
 
-            r_FormGame.StartNewSession();
+            //r_FormGame.StartNewSession();
 
         }
 

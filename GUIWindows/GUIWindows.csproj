@@ -63,6 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceGK.resx</DependentUpon>
     </Compile>
+    <Compile Include="Sources.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
