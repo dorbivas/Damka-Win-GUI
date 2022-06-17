@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace GameEngine
 {
@@ -24,7 +25,6 @@ namespace GameEngine
         public event Action<GameLogic> GameFinished;
         public event Action<Board> BoardUpdated;
         public event Action PlayerSwitched ;
-        public event Action CurrentPlayerIsPC;
 
         public Board Board
         {
@@ -118,14 +118,6 @@ namespace GameEngine
             }
         }
 
-        private void OnCurrentPlayerIsPC()
-        {
-            if (CurrentPlayerIsPC != null)
-            {
-                CurrentPlayerIsPC.Invoke();
-            }
-        }
-
         public void InitializeGameSpecifications(Board.eBoardSizes i_BoardSizes, string i_Player1Name, string i_Player2Name, bool i_IsPc)
         {
             updateBoardSize(i_BoardSizes);
@@ -138,8 +130,8 @@ namespace GameEngine
         {
             if (m_CurrentPlayer.Type == Player.ePlayerType.Computer)
             {
+                Thread.Sleep(200);
                 io_ValidMoveFromUI = m_CurrentPlayer.AI.ComputerMove(m_CurrentPlayer.NormarlPossibleMoves, m_CurrentPlayer.SkippingPossibleMoves);
-                //MinimaxAI.Minimax(this, 3, 1, out io_ValidMoveFromUI);
             }
             m_LastMove = io_ValidMoveFromUI;
             if (io_ValidMoveFromUI != null)
@@ -154,7 +146,7 @@ namespace GameEngine
 
             if (m_GameStatus == eGameStatus.Ongoing)
             {
-                if (io_ValidMoveFromUI.IsSkipMove == true)
+                if (io_ValidMoveFromUI.IsSkipMove)
                 {
                     m_CurrentPlayer.ContiniusSkipingMove(m_GameBoard, io_ValidMoveFromUI);
                     if (m_CurrentPlayer.SkippingPossibleMoves.Count == 0)
@@ -170,7 +162,8 @@ namespace GameEngine
                 OnBoardUpdated();
                 m_LastMove = io_ValidMoveFromUI;
             }
-                updateGameStatus(false);
+
+            updateGameStatus(false);
         }
 
         private void updatePlayersDetails(string i_Player1Name, string i_Player2Name, bool i_IsComputer)
@@ -199,7 +192,7 @@ namespace GameEngine
 
         private void updateGameStatus(bool i_ExitGameFlag)
         {
-            if (i_ExitGameFlag == true)
+            if (i_ExitGameFlag)
             {
                 m_GameStatus = decideWinner(m_CurrentPlayer);
             }
@@ -207,7 +200,7 @@ namespace GameEngine
             {
                 m_GameStatus = decideWinner(m_CurrentPlayer);
             }
-            else if (checkNoAvailableMoveInGame() == true)
+            else if (checkNoAvailableMoveInGame())
             {
                 if (m_CurrentPlayer.Score - m_NextPlayer.Score > 0)
                 {
@@ -237,7 +230,7 @@ namespace GameEngine
 
         private bool checkNoAvailableMoveInGame()
         {
-            return m_CurrentPlayer.CheckIfRegularMoveAvailable() == false && m_NextPlayer.CheckIfRegularMoveAvailable() == false;
+            return !m_CurrentPlayer.CheckIfRegularMoveAvailable();
         }
 
         public void UpdateGameScores()

@@ -1,18 +1,16 @@
-﻿using GameEngine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace GUIWindows
+﻿namespace GUIWindows
 {
-    class GameManager
+    using GameEngine;
+    using System;
+    using System.Text;
+    using System.Windows.Forms;
+
+    public class GameManager
     {
         private readonly FormGame r_FormGame = new FormGame();
         private readonly GameLogic r_Game = new GameLogic();
-        private Move m_DummyMove = new Move(new Position(0, 0), new Position(0, 0));
+        private readonly Move r_DummyMove = new Move(new Position(0, 0), new Position(0, 0));
+
         public void Run()
         {
             attachGameEvents();
@@ -39,7 +37,7 @@ namespace GUIWindows
         {
             EventGameSettings egs = e as EventGameSettings;
 
-            r_Game.InitializeGameSpecifications(egs.BoardSize, egs.Player1Name, egs.Player2Name, (egs.Player2Type == Player.ePlayerType.Computer) ? true : false);
+            r_Game.InitializeGameSpecifications(egs.BoardSize, egs.Player1Name, egs.Player2Name, egs.Player2Type == Player.ePlayerType.Computer);
         }
 
         private void r_FormGame_Moved(Move i_NextMove)
@@ -51,7 +49,6 @@ namespace GUIWindows
             else
             {
                 r_Game.ExecuteSingleTurn(i_NextMove);
-
             }
         }
 
@@ -66,10 +63,10 @@ namespace GUIWindows
                 {
                     r_GameEngine_SwitchedPlayers();
                 }
+
                 r_Game.GameStatus = GameLogic.eGameStatus.Ongoing;
                 r_FormGame.ResetEventFormGameSettings();
-                r_FormGame.UpdatePictureBoxBoard(r_Game.Board);               
-
+                r_FormGame.UpdateBoardUI(r_Game.Board);               
             }
             else
             {
@@ -79,33 +76,14 @@ namespace GUIWindows
 
         private void r_GameEngine_BoardUpdated(Board i_Board)
         {
-            r_FormGame.UpdatePictureBoxBoard(i_Board);
+            r_FormGame.UpdateBoardUI(i_Board);
         }
 
-        //TODO
         private void r_GameEngine_GameFinished(object sender)
         {
             GameLogic game = sender as GameLogic;
 
-            r_FormGame.CreateYesNoMessageBox(EndSessionResult(game.GameStatus), "Checkers");
-        }
-
-        private string EndSessionResult(GameEngine.GameLogic.eGameStatus i_Result)
-        {
-            StringBuilder endGameMessage = new StringBuilder();
-
-            if (i_Result == GameEngine.GameLogic.eGameStatus.Draw)
-            { 
-                endGameMessage.Append("Tie!");
-            }
-            else
-            {
-                endGameMessage.Append(string.Format("{0} Won!{1}", r_Game.NextPlayer.Name, Environment.NewLine));
-            }
-
-            endGameMessage.Append("Do You Want To Play Again?");
-
-            return endGameMessage.ToString();
+            r_FormGame.CreateYesNoMessageBox(endSessionResult(game.GameStatus), "Damka");
         }
 
         private void r_GameEngine_SwitchedPlayers()
@@ -115,16 +93,35 @@ namespace GUIWindows
             {
                 do
                 {
-                    r_Game.ExecuteSingleTurn(m_DummyMove);
-                } while (r_Game.CurrentPlayer.SkippingPossibleMoves.Count >0 && r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer);
+                    r_Game.ExecuteSingleTurn(r_DummyMove);
+                } 
+                while (r_Game.CurrentPlayer.SkippingPossibleMoves.Count > 0 && r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer);
             }
         }
 
         private void r_GameEngine_GameStarted(Object sender)
         {
-            r_FormGame.StartSession(r_Game.Player1Score, r_Game.Player2Score, r_Game.CurrentPlayer.Name);
+            r_FormGame.KeepSessionInformation(r_Game.Player1Score, r_Game.Player2Score, r_Game.CurrentPlayer.Name);
             r_Game.UpdateGameScores();
             r_Game.ResetGameEngine();
+        }
+
+        private string endSessionResult(GameEngine.GameLogic.eGameStatus i_Result)
+        {
+            StringBuilder endGameMessage = new StringBuilder();
+
+            if (i_Result == GameEngine.GameLogic.eGameStatus.Draw)
+            {
+                endGameMessage.Append("Tie!");
+            }
+            else
+            {
+                endGameMessage.Append(string.Format("{0} Won!{1}", r_Game.NextPlayer.Name, Environment.NewLine));
+            }
+
+            endGameMessage.Append("Do you want to do another game?");
+
+            return endGameMessage.ToString();
         }
     }
 }

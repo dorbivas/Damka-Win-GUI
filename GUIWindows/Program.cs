@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
-namespace GUIWindows
+﻿namespace GUIWindows
 {
-    class Program
+    public class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public static void Main()
         {
             GameManager game = new GameManager();
             game.Run();

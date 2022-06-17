@@ -67,7 +67,6 @@
             this.radioButtonSmallSize.Text = "6 x 6";
             this.radioButtonSmallSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.radioButtonSmallSize.UseVisualStyleBackColor = false;
-            this.radioButtonSmallSize.CheckedChanged += new System.EventHandler(this.radioButtonSmallBoardSize_CheckedChanged);
             // 
             // radioButtonMediumBoardSize
             // 
@@ -82,7 +81,6 @@
             this.radioButtonMediumSize.Text = "8 x 8";
             this.radioButtonMediumSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.radioButtonMediumSize.UseVisualStyleBackColor = false;
-            this.radioButtonMediumSize.CheckedChanged += new System.EventHandler(this.radioButtonMediumBoardSize_CheckedChanged);
             // 
             // radioButtonLargeBoardSize
             // 
@@ -97,7 +95,6 @@
             this.radioButtonLargeSize.Text = "10 x 10";
             this.radioButtonLargeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.radioButtonLargeSize.UseVisualStyleBackColor = false;
-            this.radioButtonLargeSize.CheckedChanged += new System.EventHandler(this.radioButtonLargeBoardSize_CheckedChanged);
             // 
             // labelBoardSize
             // 
@@ -140,7 +137,6 @@
             this.labelPlayer1.Size = new System.Drawing.Size(48, 13);
             this.labelPlayer1.TabIndex = 4;
             this.labelPlayer1.Text = "Player 1:";
-            this.labelPlayer1.Click += new System.EventHandler(this.labelPlayer1_Click);
             // 
             // checkBoxPlayer2
             // 
@@ -184,7 +180,6 @@
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Settings";
-            this.Load += new System.EventHandler(this.FormSettings_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -39,7 +39,7 @@ namespace GameEngine
             return i_SizeToCheck == Board.eBoardSizes.Small || i_SizeToCheck == Board.eBoardSizes.Medium || i_SizeToCheck == Board.eBoardSizes.Large;
         }
 
-        public static bool IsDiffrentType(int i_First, int i_Second)
+        public static bool IsNotSameColor(int i_First, int i_Second)
         {
             return (i_First % 2) != (i_Second % 2);
         }

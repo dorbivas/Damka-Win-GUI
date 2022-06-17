@@ -4,6 +4,7 @@
     using System.Drawing;
     using System.Windows.Forms;
     using GameEngine;
+
     public partial class FormSettings : Form
     {
         public FormSettings()
@@ -30,9 +31,7 @@
 
         public bool IsPlayer2PC
         {
-
             get => !checkBoxPlayer2.Checked;
-
         }
 
         public Board.eBoardSizes BoardSize
@@ -72,7 +71,7 @@
 
         private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxPlayer2Name.Enabled = textBoxPlayer2Name.Enabled == true ? false : true;
+            textBoxPlayer2Name.Enabled = textBoxPlayer2Name.Enabled != true;
 
             if (textBoxPlayer2Name.Enabled)
             {
@@ -85,36 +84,5 @@
                 this.textBoxPlayer2Name.Text = "[Deep-blue Computer]";
             }
         }
-
-        private void FormSettings_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormSettings_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelPlayer1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButtonLargeBoardSize_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButtonSmallBoardSize_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButtonMediumBoardSize_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
-

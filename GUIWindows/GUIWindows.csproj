@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventGameSettings.cs" />
-    <Compile Include="EventMove.cs" />
     <Compile Include="FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,7 +92,6 @@
     <Content Include="Resources\PiecePressed.png" />
     <Content Include="Resources\WhiteKing.png" />
     <Content Include="Resources\WhitePiece.png" />
-    <Content Include="Todi.txt" />
     <Content Include="Sources\gk.jpg" />
   </ItemGroup>
   <ItemGroup>

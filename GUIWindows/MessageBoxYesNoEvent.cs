@@ -1,7 +1,7 @@
-﻿
-namespace GUIWindows
+﻿namespace GUIWindows
 {
     using System;
+
     public class MessageBoxYesNoEvent : EventArgs
     {
         private readonly bool r_MessageBoxClickedYes;

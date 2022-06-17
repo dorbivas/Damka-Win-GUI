@@ -1,7 +1,8 @@
 ﻿namespace GUIWindows
 {
     using System.IO;
-    class Sources
+
+    public class Sources
     {
         private static readonly string sr_WhitePieceImage = "WhitePiece.png";
         private static readonly string sr_WhiteKingImage = "WhiteKing.png";
@@ -14,7 +15,7 @@
 
         static Sources()
         {
-            sr_SourcesPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
+            sr_SourcesPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName}\\Resources";
         }
 
         public static string WhitePiece

@@ -1,22 +1,21 @@
-﻿using GameEngine;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Text;
-
-
-namespace GUIWindows
+﻿namespace GUIWindows
 {
+    using GameEngine;
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     public partial class FormGame : Form
     {
         public event EventHandler SettingsFilled, MessageBoxInteractions;
+
         public event Action<Move> Moved;
+
         private const int k_PictureBoxSize = 50;
         private const int k_ExtraWidth = 20;
         private const int k_ExtraHeight = 100;
         private const int k_StartingPictureBoxX = 0;
         private const int k_StartingPictureBoxY = 40;
-        private const int k_Suspension = 130;
         private readonly FormSettings r_FormSettings = new FormSettings();
         private Label labelPlayer1Name;
         private Label labelPlayer2Name;
@@ -59,23 +58,28 @@ namespace GUIWindows
                 for (int j = 0; j < ((int)m_EventGameSettings.BoardSize); j++)
                 {
                     newPiece = new PictureBoxPiece(i, j);
-                    setPictureBoxLocation(newPiece, isNewLine, isFirstPictureBox, lastlPiece);
-                    setPictureBox(newPiece);
-                    m_PictureBoxBoard[i, j] = newPiece;
-                    Controls.Add(newPiece);
-                    isNewLine = false;
-                    isFirstPictureBox = false;
-                    lastlPiece = newPiece;
+                    handleSinglePictureBoxPiece(ref isNewLine, ref isFirstPictureBox, ref lastlPiece, newPiece, i, j);
                 }
 
                 isNewLine = true;
             }
         }
 
-        public void UpdatePictureBoxBoard(Board i_Board)
+        private void handleSinglePictureBoxPiece(ref bool i_IsNewLine, ref bool i_IsFirstPictureBox, ref PictureBox io_LastlPiece, PictureBoxPiece io_NewPiece, int i, int j)
+        {
+            setPictureBoxLocation(io_NewPiece, i_IsNewLine, i_IsFirstPictureBox, io_LastlPiece);
+            setPictureBox(io_NewPiece);
+            m_PictureBoxBoard[i, j] = io_NewPiece;
+            Controls.Add(io_NewPiece);
+            i_IsNewLine = false;
+            i_IsFirstPictureBox = false;
+            io_LastlPiece = io_NewPiece;
+        }
+
+        public void UpdateBoardUI(Board i_Board)
         {
             Piece.ePieceType PieceType = Piece.ePieceType.Empty;
-            bool enablePiece = false;
+            bool isPieceEnabled = false;
             string cellImage = string.Empty;
 
             for (int i = 0; i < i_Board.BoardSize; i++)
@@ -83,28 +87,28 @@ namespace GUIWindows
                 for (int j = 0; j < i_Board.BoardSize; j++)
                 {
                     PieceType = i_Board.GetPieceType(i, j);
-                    if (Board.IsDiffrentType(i, j))
+                    if (Board.IsNotSameColor(i, j))
                     {
                         switch (PieceType)
                         {
                             case Piece.ePieceType.Empty:
-                                enablePiece = true;
+                                isPieceEnabled = true;
                                 cellImage = Sources.Empty;
                                 break;
                             case Piece.ePieceType.PieceO:
-                                enablePiece = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerTwoO;
+                                isPieceEnabled = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerTwoO;
                                 cellImage = PieceType == Piece.ePieceType.PieceO ? Sources.WhitePiece : Sources.WhiteKingPiece;
                                 break;
                             case Piece.ePieceType.PieceX:
-                                enablePiece = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX;
+                                isPieceEnabled = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX;
                                 cellImage = PieceType == Piece.ePieceType.PieceX ? Sources.BlackPiece : Sources.BlackKingPiece;
                                 break;
                             case Piece.ePieceType.KingO:
-                                enablePiece = true;
+                                isPieceEnabled = true;
                                 cellImage = Sources.WhiteKingPiece;
                                 break;
                             case Piece.ePieceType.KingX:
-                                enablePiece = true;
+                                isPieceEnabled = true;
                                 cellImage = Sources.BlackKingPiece;
                                 break;
                             default:
@@ -113,16 +117,11 @@ namespace GUIWindows
                     }
                     else
                     {
-                        enablePiece = false;
+                        isPieceEnabled = false;
                         cellImage = Sources.NullCell;
                     }
 
-                    m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, enablePiece, PieceType);
-                }
-
-                if (m_EventGameSettings.CurrentPlayer == Enum.GetName(typeof(Player.ePlayerType), Player.ePlayerType.Computer))
-                {
-                    System.Threading.Thread.Sleep(k_Suspension);
+                    m_PictureBoxBoard[i, j].SetPictureBoxPiece(cellImage, isPieceEnabled, PieceType);
                 }
             }
         }
@@ -191,7 +190,7 @@ namespace GUIWindows
             }
         }
 
-        public void m_FormSettings_Closed(object sender, FormClosedEventArgs e)
+        public void r_FormSettings_Closed(object sender, FormClosedEventArgs e)
         {
             if (string.IsNullOrEmpty(r_FormSettings.Player1Name))
             {
@@ -213,15 +212,13 @@ namespace GUIWindows
                 r_FormSettings.Player2Name,
                 r_FormSettings.BoardSize,
                 r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
-            //setPlayersLabels(m_EventGameSettings.Player1Score, m_EventGameSettings.Player2Score);
             InitialzeNewGameForm();
             OnGameSettingsFiled(m_EventGameSettings);
         }
 
-
         private void FormGame_OnLoad(object sender, EventArgs e)
         {
-            r_FormSettings.FormClosed += m_FormSettings_Closed;
+            r_FormSettings.FormClosed += r_FormSettings_Closed;
             r_FormSettings.ShowDialog();
         }
 
@@ -229,7 +226,37 @@ namespace GUIWindows
         {
             this.Size = new Size(((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraWidth,
                                  ((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraHeight);
+        }
 
+        public void KeepSessionInformation(int i_Player1Score, int i_Player2Score, string i_CurrentPlayerName)
+        {
+            m_EventGameSettings.SetPlayers(i_CurrentPlayerName);
+            setLabels(i_Player1Score, i_Player2Score);
+        }
+
+        private void setLabels(int i_Player1Score, int i_Player2Score)
+        {
+            if (r_FormSettings.IsPlayer2PC)
+            {
+                this.labelPlayer2Name.Text = string.Format("Deep-blue AI: {0}", i_Player2Score);
+            }
+            else
+            {
+                this.labelPlayer2Name.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, i_Player2Score);
+            }
+
+            labelPlayer1Name.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, i_Player1Score);
+            labelPlayer1Name.ForeColor = Color.Black;
+            labelPlayer2Name.ForeColor = Color.Black;
+        }
+
+        public void SwitchPlayers()
+        {
+            string playerName = m_EventGameSettings.CurrentPlayer;
+
+            m_EventGameSettings.CurrentPlayer = m_EventGameSettings.NextPlayer;
+            m_EventGameSettings.NextPlayer = playerName;
+            m_EventGameSettings.CurrentPlayerNumber = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX ? Player.ePlayerNumber.PlayerTwoO : Player.ePlayerNumber.PlayerOneX;
         }
 
         public void CreateYesNoMessageBox(string i_MessageBoxString, string i_Caption)
@@ -259,7 +286,6 @@ namespace GUIWindows
             }
         }
 
-
         protected virtual void OnGameSettingsFiled(EventGameSettings egs)
         {
             if (SettingsFilled != null)
@@ -274,40 +300,6 @@ namespace GUIWindows
             {
                 Moved.Invoke(i_move);
             }
-        }
-
-        public void StartSession(int i_Player1Score, int i_Player2Score, string i_CurrentPlayerName)
-        {
-            m_EventGameSettings.SetPlayers(i_CurrentPlayerName);
-            setLabels(i_Player1Score, i_Player2Score);
-        }
-
-        private void setLabels(int i_Player1Score, int i_Player2Score)
-        {
-            if (r_FormSettings.IsPlayer2PC)//r_FormSettings.Player1Name == "[Deep-blue Computer]")
-            {
-                this.labelPlayer2Name.Text = string.Format("Deep-blue AI: {0}", i_Player2Score);
-            }
-            else
-            {
-                this.labelPlayer2Name.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, i_Player2Score);
-            }
-
-            labelPlayer1Name.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, i_Player1Score);
-            labelPlayer1Name.ForeColor = Color.Black;
-            labelPlayer2Name.ForeColor = Color.Black;
-        }
-
-        public void SwitchPlayers()
-        {
-            string playerNameSaver = m_EventGameSettings.CurrentPlayer;
-
-            m_EventGameSettings.CurrentPlayer = m_EventGameSettings.NextPlayer;
-            m_EventGameSettings.NextPlayer = playerNameSaver;
-            m_EventGameSettings.CurrentPlayerNumber = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX ? Player.ePlayerNumber.PlayerTwoO : Player.ePlayerNumber.PlayerOneX;
-            //TODO
-            //this.labelPlayer1Name.ForeColor = this.labelPlayer1Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
-            //this.labelPlayer2Name.ForeColor = this.labelPlayer2Name.ForeColor == Color.Blue ? Color.Black : Color.Blue;
         }
     }
 }
