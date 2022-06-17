@@ -71,7 +71,7 @@
 
         private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxPlayer2Name.Enabled = textBoxPlayer2Name.Enabled != true;
+            textBoxPlayer2Name.Enabled = !textBoxPlayer2Name.Enabled;
 
             if (textBoxPlayer2Name.Enabled)
             {

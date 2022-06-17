@@ -48,7 +48,6 @@
     <Compile Include="Board.cs" />
     <Compile Include="ComputerAI.cs" />
     <Compile Include="GameLogic.cs" />
-    <Compile Include="MinimaxAI.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="Player.cs" />

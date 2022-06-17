@@ -36,6 +36,14 @@ namespace GameEngine
             }
         }
 
+        public static bool CheckIfValidPlayerTypeInput(string i_PlayerType, out ePlayerType o_PlayerTypeValidation)
+        {
+            bool isNumericEnum;
+
+            isNumericEnum = ePlayerType.TryParse(i_PlayerType, out o_PlayerTypeValidation);
+            return isNumericEnum && checkIfValidType(o_PlayerTypeValidation);
+        }
+
         public List<Move> GetValidMoves(Board i_Board)
         {
             UpdatePlayerMoves(i_Board);
@@ -53,19 +61,6 @@ namespace GameEngine
                     m_AI = new ComputerAI();
                 }
             }
-        }
-
-        public Player Copy()
-        {
-            Player copy = new Player(m_Name, this.m_PlayerNumber ,this.m_PlayerType);
-            copy.m_NormalPossibleMoves = new List<Move>(this.m_NormalPossibleMoves);
-            copy.m_SkippingPossibleMoves = new List<Move>(this.m_SkippingPossibleMoves);
-            foreach (var piece in this.r_PlayerPiecesList)
-            {
-                copy.r_PlayerPiecesList.Add(piece);
-            }
-
-            return copy;
         }
 
         public ePlayerNumber PlayerNumber
@@ -107,15 +102,7 @@ namespace GameEngine
             get => calculatePlayerScore();
         }
 
-        public static bool CheckIfValidPlayerTypeInput(string i_PlayerType, out ePlayerType o_PlayerTypeValidation)
-        {
-            bool isNumericEnum;
-
-            isNumericEnum = ePlayerType.TryParse(i_PlayerType, out o_PlayerTypeValidation);
-            return isNumericEnum && checkIfValidType(o_PlayerTypeValidation);
-        }
-
-        private static bool checkIfValidType(ePlayerType i_TypeToCheck) 
+       private static bool checkIfValidType(ePlayerType i_TypeToCheck) 
         {
             return i_TypeToCheck == ePlayerType.Computer || i_TypeToCheck == ePlayerType.Human;
         }
@@ -195,14 +182,14 @@ namespace GameEngine
                 nextPiecePosition = i_Board.GetPieceByRef(nextPosition);
                 if (IsPieceBelongsToOppnentOrEmpty(nextPiecePosition) == true)
                 {
-                    if (nextPiecePosition.CheckIfThePieceEmpty())
+                    if (nextPiecePosition.CheckIfThePieceEmpty() == true)
                     {
                         nextMove = new Move(i_Piece.Position, nextPosition);
                         m_NormalPossibleMoves.Add(nextMove);
                     }
                     else
                     {
-                        skipNextPosition = new Position(nextPiecePosition.Position.Row*2 - i_Piece.Position.Row, (nextPiecePosition.Position.Col * 2) - i_Piece.Position.Col);
+                        skipNextPosition = new Position((nextPiecePosition.Position.Row * 2) - i_Piece.Position.Row, (nextPiecePosition.Position.Col * 2) - i_Piece.Position.Col);
                         if (i_Board.CheckIfOutOfBounds(skipNextPosition) == false && i_Board.GetPieceByRef(skipNextPosition).CheckIfThePieceEmpty())
                         {
                             nextMove = new Move(i_Piece.Position, skipNextPosition, nextPosition);

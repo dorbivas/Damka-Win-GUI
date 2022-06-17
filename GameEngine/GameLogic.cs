@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace GameEngine
 {
@@ -13,6 +12,10 @@ namespace GameEngine
             Player1XWin
         }
 
+        public event Action<GameLogic> GameStarted;
+        public event Action<GameLogic> GameFinished;
+        public event Action<Board> BoardUpdated;
+        public event Action PlayerSwitched;
         private Board m_GameBoard;
         private Player m_CurrentPlayer;
         private Player m_NextPlayer;
@@ -20,11 +23,6 @@ namespace GameEngine
         private eGameStatus m_GameStatus;
         private int m_Player1Score;
         private int m_Player2Score;
-
-        public event Action<GameLogic> GameStarted;
-        public event Action<GameLogic> GameFinished;
-        public event Action<Board> BoardUpdated;
-        public event Action PlayerSwitched ;
 
         public Board Board
         {
@@ -41,34 +39,19 @@ namespace GameEngine
             get => m_NextPlayer;
         }
 
-        public Move LastMove 
+        public Move LastMove
         {
             get => m_LastMove;
         }
 
-        public int Player1Score 
-        { 
-            get => m_Player1Score; 
+        public int Player1Score
+        {
+            get => m_Player1Score;
         }
 
         public int Player2Score
         {
             get => m_Player2Score;
-        }
-
-        public GameLogic Copy()
-        {
-            GameLogic copy = new GameLogic();
-            copy.m_CurrentPlayer = this.m_CurrentPlayer.Copy();
-            copy.m_NextPlayer = this.m_NextPlayer.Copy();
-            copy.m_GameBoard = this.m_GameBoard.Copy();
-            copy.m_GameStatus = this.m_GameStatus;
-            copy.m_LastMove = this.m_LastMove;
-            copy.m_Player1Score = this.m_Player1Score;
-            copy.m_Player2Score = this.m_Player2Score;
-
-
-            return copy;
         }
 
         public eGameStatus GameStatus
@@ -130,9 +113,9 @@ namespace GameEngine
         {
             if (m_CurrentPlayer.Type == Player.ePlayerType.Computer)
             {
-                Thread.Sleep(200);
                 io_ValidMoveFromUI = m_CurrentPlayer.AI.ComputerMove(m_CurrentPlayer.NormarlPossibleMoves, m_CurrentPlayer.SkippingPossibleMoves);
             }
+
             m_LastMove = io_ValidMoveFromUI;
             if (io_ValidMoveFromUI != null)
             {
@@ -146,7 +129,7 @@ namespace GameEngine
 
             if (m_GameStatus == eGameStatus.Ongoing)
             {
-                if (io_ValidMoveFromUI.IsSkipMove)
+                if (io_ValidMoveFromUI.IsSkipMove == true)
                 {
                     m_CurrentPlayer.ContiniusSkipingMove(m_GameBoard, io_ValidMoveFromUI);
                     if (m_CurrentPlayer.SkippingPossibleMoves.Count == 0)
@@ -171,7 +154,7 @@ namespace GameEngine
             Player.ePlayerType nextPlayerType = (i_IsComputer == true) ? Player.ePlayerType.Computer : Player.ePlayerType.Human;
 
             m_CurrentPlayer = new Player(i_Player1Name, Player.ePlayerNumber.PlayerOneX, Player.ePlayerType.Human);
-            m_NextPlayer = new Player(i_Player2Name, Player.ePlayerNumber.PlayerTwoO, nextPlayerType);           
+            m_NextPlayer = new Player(i_Player2Name, Player.ePlayerNumber.PlayerTwoO, nextPlayerType);
         }
 
         private void updateBoardSize(Board.eBoardSizes i_BoardSizes)
@@ -192,7 +175,7 @@ namespace GameEngine
 
         private void updateGameStatus(bool i_ExitGameFlag)
         {
-            if (i_ExitGameFlag)
+            if (i_ExitGameFlag == true)
             {
                 m_GameStatus = decideWinner(m_CurrentPlayer);
             }
@@ -200,7 +183,7 @@ namespace GameEngine
             {
                 m_GameStatus = decideWinner(m_CurrentPlayer);
             }
-            else if (checkNoAvailableMoveInGame())
+            else if (checkNoAvailableMoveInGame() == true)
             {
                 if (m_CurrentPlayer.Score - m_NextPlayer.Score > 0)
                 {
@@ -230,7 +213,7 @@ namespace GameEngine
 
         private bool checkNoAvailableMoveInGame()
         {
-            return !m_CurrentPlayer.CheckIfRegularMoveAvailable();
+            return m_CurrentPlayer.CheckIfRegularMoveAvailable() == false && m_NextPlayer.CheckIfRegularMoveAvailable() == false;
         }
 
         public void UpdateGameScores()

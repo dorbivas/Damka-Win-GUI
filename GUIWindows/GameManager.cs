@@ -1,9 +1,9 @@
 ﻿namespace GUIWindows
 {
-    using GameEngine;
     using System;
     using System.Text;
     using System.Windows.Forms;
+    using GameEngine;
 
     public class GameManager
     {
@@ -99,7 +99,7 @@
             }
         }
 
-        private void r_GameEngine_GameStarted(Object sender)
+        private void r_GameEngine_GameStarted(object sender)
         {
             r_FormGame.KeepSessionInformation(r_Game.Player1Score, r_Game.Player2Score, r_Game.CurrentPlayer.Name);
             r_Game.UpdateGameScores();

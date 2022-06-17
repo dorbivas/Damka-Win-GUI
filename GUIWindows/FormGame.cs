@@ -1,9 +1,9 @@
 ﻿namespace GUIWindows
 {
-    using GameEngine;
     using System;
     using System.Drawing;
     using System.Windows.Forms;
+    using GameEngine;
 
     public partial class FormGame : Form
     {
@@ -45,40 +45,42 @@
             setBoardFormSize();
             initializeBoardPictureBox();
         }
-
-        private void initializeBoardPictureBox()
+        
+        public void r_FormSettings_Closed(object sender, FormClosedEventArgs e)
         {
-            bool isNewLine = false, isFirstPictureBox = true;
-            PictureBox lastlPiece = new PictureBox();
-            PictureBoxPiece newPiece;
-            m_PictureBoxBoard = new PictureBoxPiece[(int)m_EventGameSettings.BoardSize, (int)m_EventGameSettings.BoardSize];
-
-            for (int i = 0; i < ((int)m_EventGameSettings.BoardSize); i++)
+            if (string.IsNullOrEmpty(r_FormSettings.Player1Name))
             {
-                for (int j = 0; j < ((int)m_EventGameSettings.BoardSize); j++)
-                {
-                    newPiece = new PictureBoxPiece(i, j);
-                    handleSinglePictureBoxPiece(ref isNewLine, ref isFirstPictureBox, ref lastlPiece, newPiece, i, j);
-                }
-
-                isNewLine = true;
+                r_FormSettings.Player1Name = "Noob Player 1";
             }
+
+            if (r_FormSettings.IsPlayer2PC)
+            {
+                r_FormSettings.Player2Name = "Deep-Blue";
+            }
+
+            if (string.IsNullOrEmpty(r_FormSettings.Player2Name))
+            {
+                r_FormSettings.Player2Name = "Noob Player 2";
+            }
+
+            m_EventGameSettings = new EventGameSettings(
+                r_FormSettings.Player1Name,
+                r_FormSettings.Player2Name,
+                r_FormSettings.BoardSize,
+                r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human);
+            InitialzeNewGameForm();
+            OnGameSettingsFiled(m_EventGameSettings);
         }
 
-        private void handleSinglePictureBoxPiece(ref bool i_IsNewLine, ref bool i_IsFirstPictureBox, ref PictureBox io_LastlPiece, PictureBoxPiece io_NewPiece, int i, int j)
+        public void KeepSessionInformation(int i_Player1Score, int i_Player2Score, string i_CurrentPlayerName)
         {
-            setPictureBoxLocation(io_NewPiece, i_IsNewLine, i_IsFirstPictureBox, io_LastlPiece);
-            setPictureBox(io_NewPiece);
-            m_PictureBoxBoard[i, j] = io_NewPiece;
-            Controls.Add(io_NewPiece);
-            i_IsNewLine = false;
-            i_IsFirstPictureBox = false;
-            io_LastlPiece = io_NewPiece;
+            m_EventGameSettings.SetPlayers(i_CurrentPlayerName);
+            setLabels(i_Player1Score, i_Player2Score);
         }
-
+        
         public void UpdateBoardUI(Board i_Board)
         {
-            Piece.ePieceType PieceType = Piece.ePieceType.Empty;
+            Piece.ePieceType PieceType;
             bool isPieceEnabled = false;
             string cellImage = string.Empty;
 
@@ -121,9 +123,67 @@
                         cellImage = Sources.NullCell;
                     }
 
-                    m_PictureBoxBoard[i, j].SetPictureBoxPiece(cellImage, isPieceEnabled, PieceType);
+                    m_PictureBoxBoard[i, j].SetPictureBoxCell(cellImage, isPieceEnabled, PieceType);
                 }
             }
+        }
+
+        public void SwitchPlayers()
+        {
+            string playerName = m_EventGameSettings.CurrentPlayer;
+
+            m_EventGameSettings.CurrentPlayer = m_EventGameSettings.NextPlayer;
+            m_EventGameSettings.NextPlayer = playerName;
+            m_EventGameSettings.CurrentPlayerNumber = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX ? Player.ePlayerNumber.PlayerTwoO : Player.ePlayerNumber.PlayerOneX;
+        }
+
+        public void CreateYesNoMessageBox(string i_MessageBoxString, string i_Caption)
+        {
+            DialogResult dialogResult = MessageBox.Show(i_MessageBoxString, i_Caption, MessageBoxButtons.YesNo);
+            MessageBoxYesNoEvent mbyne;
+            bool isMessageBoxAnswerIsYes = false;
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                isMessageBoxAnswerIsYes = true;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                isMessageBoxAnswerIsYes = false;
+            }
+
+            mbyne = new MessageBoxYesNoEvent(isMessageBoxAnswerIsYes);
+            OnMessageBoxYesNoAnswered(mbyne);
+        }
+
+        private void initializeBoardPictureBox()
+        {
+            bool isNewLine = false, isFirstPictureBox = true;
+            PictureBox lastlPiece = new PictureBox();
+            PictureBoxPiece newPiece;
+            m_PictureBoxBoard = new PictureBoxPiece[(int)m_EventGameSettings.BoardSize, (int)m_EventGameSettings.BoardSize];
+
+            for (int i = 0; i < ((int)m_EventGameSettings.BoardSize); i++)
+            {
+                for (int j = 0; j < ((int)m_EventGameSettings.BoardSize); j++)
+                {
+                    newPiece = new PictureBoxPiece(i, j);
+                    handleSinglePictureBoxPiece(ref isNewLine, ref isFirstPictureBox, ref lastlPiece, newPiece, i, j);
+                }
+
+                isNewLine = true;
+            }
+        }
+
+        private void handleSinglePictureBoxPiece(ref bool i_IsNewLine, ref bool i_IsFirstPictureBox, ref PictureBox io_LastlPiece, PictureBoxPiece io_NewPiece, int i, int j)
+        {
+            setPictureBoxLocation(io_NewPiece, i_IsNewLine, i_IsFirstPictureBox, io_LastlPiece);
+            setPictureBox(io_NewPiece);
+            m_PictureBoxBoard[i, j] = io_NewPiece;
+            Controls.Add(io_NewPiece);
+            i_IsNewLine = false;
+            i_IsFirstPictureBox = false;
+            io_LastlPiece = io_NewPiece;
         }
 
         private void setPictureBox(PictureBoxPiece io_CurrentPictureBox)
@@ -190,32 +250,6 @@
             }
         }
 
-        public void r_FormSettings_Closed(object sender, FormClosedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(r_FormSettings.Player1Name))
-            {
-                r_FormSettings.Player1Name = "Noob Player 1";
-            }
-
-            if (r_FormSettings.IsPlayer2PC)
-            {
-                r_FormSettings.Player2Name = "Deep-Blue";
-            }
-
-            if (string.IsNullOrEmpty(r_FormSettings.Player2Name))
-            {
-                r_FormSettings.Player2Name = "Noob Player 2";
-            }
-
-            m_EventGameSettings = new EventGameSettings(
-                r_FormSettings.Player1Name,
-                r_FormSettings.Player2Name,
-                r_FormSettings.BoardSize,
-                r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
-            InitialzeNewGameForm();
-            OnGameSettingsFiled(m_EventGameSettings);
-        }
-
         private void FormGame_OnLoad(object sender, EventArgs e)
         {
             r_FormSettings.FormClosed += r_FormSettings_Closed;
@@ -226,12 +260,6 @@
         {
             this.Size = new Size(((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraWidth,
                                  ((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraHeight);
-        }
-
-        public void KeepSessionInformation(int i_Player1Score, int i_Player2Score, string i_CurrentPlayerName)
-        {
-            m_EventGameSettings.SetPlayers(i_CurrentPlayerName);
-            setLabels(i_Player1Score, i_Player2Score);
         }
 
         private void setLabels(int i_Player1Score, int i_Player2Score)
@@ -250,34 +278,6 @@
             labelPlayer2Name.ForeColor = Color.Black;
         }
 
-        public void SwitchPlayers()
-        {
-            string playerName = m_EventGameSettings.CurrentPlayer;
-
-            m_EventGameSettings.CurrentPlayer = m_EventGameSettings.NextPlayer;
-            m_EventGameSettings.NextPlayer = playerName;
-            m_EventGameSettings.CurrentPlayerNumber = m_EventGameSettings.CurrentPlayerNumber == Player.ePlayerNumber.PlayerOneX ? Player.ePlayerNumber.PlayerTwoO : Player.ePlayerNumber.PlayerOneX;
-        }
-
-        public void CreateYesNoMessageBox(string i_MessageBoxString, string i_Caption)
-        {
-            DialogResult dialogResult = MessageBox.Show(i_MessageBoxString, i_Caption, MessageBoxButtons.YesNo);
-            MessageBoxYesNoEvent mbyne;
-            bool isMessageBoxAnswerIsYes = false;
-
-            if (dialogResult == DialogResult.Yes)
-            {
-                isMessageBoxAnswerIsYes = true;
-            }
-            else if (dialogResult == DialogResult.No)
-            {
-                isMessageBoxAnswerIsYes = false;
-            }
-
-            mbyne = new MessageBoxYesNoEvent(isMessageBoxAnswerIsYes);
-            OnMessageBoxYesNoAnswered(mbyne);
-        }
-
         private void OnMessageBoxYesNoAnswered(MessageBoxYesNoEvent mbyne)
         {
             if (MessageBoxInteractions != null)
@@ -286,7 +286,7 @@
             }
         }
 
-        protected virtual void OnGameSettingsFiled(EventGameSettings egs)
+        private void OnGameSettingsFiled(EventGameSettings egs)
         {
             if (SettingsFilled != null)
             {

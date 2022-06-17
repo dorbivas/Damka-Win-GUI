@@ -28,7 +28,7 @@ namespace GameEngine
 
         public static bool CheckIfValidBoardSizeInput(string i_BoardSize, out eBoardSizes o_BoardSizeValidation)
         {
-            bool isNumericEnum = false;
+            bool isNumericEnum;
 
             isNumericEnum = eBoardSizes.TryParse(i_BoardSize, out o_BoardSizeValidation);
             return isNumericEnum && CheckIfValidSize(o_BoardSizeValidation);
@@ -61,7 +61,6 @@ namespace GameEngine
                         {
                             r_Board[i, j] = new Piece(i, j, Piece.ePieceType.PieceX);
                             i_PlayerOne.AddPiece(r_Board[i, j]);
-                            
                         }
                         else 
                         {
@@ -76,20 +75,6 @@ namespace GameEngine
                     }
                 }
             }
-        }
-
-        public Board Copy()
-        {
-            Board copy = new Board((eBoardSizes)this.r_Size);
-            for (int i = 0; i < r_Size; i++)
-            {
-                for (int j = 0; j < r_Size; j++)
-                {
-                    copy.r_Board[i, j] = this.r_Board[i, j];
-                }
-            }
-
-            return copy;
         }
 
         public void ClearBoard(Player i_PlayerOne, Player i_PlayerTwo)

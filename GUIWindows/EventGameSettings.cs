@@ -1,7 +1,7 @@
 ﻿namespace GUIWindows
 {
-    using GameEngine;
     using System;
+    using GameEngine;
 
     public class EventGameSettings : EventArgs
     {
@@ -17,13 +17,13 @@
 
         public EventGameSettings(string i_Player1Name, string i_Player2Name, Board.eBoardSizes i_BoardSize, Player.ePlayerType i_Player2Type)
         {
-            this.r_Player1Name = i_Player1Name;
-            this.r_Player2Name = i_Player2Name;
-            this.r_BoardSize = i_BoardSize;
-            this.r_OpponentType = i_Player2Type;
-            this.m_CurrentPlayer = r_Player1Name;
-            this.m_NextPlayer = r_Player2Name;
-            this.m_CurrentPlayerNumber = Player.ePlayerNumber.PlayerOneX;
+            r_Player1Name = i_Player1Name;
+            r_Player2Name = i_Player2Name;
+            r_BoardSize = i_BoardSize;
+            r_OpponentType = i_Player2Type;
+            m_CurrentPlayer = r_Player1Name;
+            m_NextPlayer = r_Player2Name;
+            m_CurrentPlayerNumber = Player.ePlayerNumber.PlayerOneX;
         }
 
         public Board.eBoardSizes BoardSize
@@ -69,9 +69,17 @@
             get => m_NextPlayer;
             set => m_NextPlayer = value;
         }
-
-        public int Player2Score { get => m_Player2Score; set => m_Player2Score = value; }
-
-        public int Player1Score { get => m_Player1Score; set => m_Player1Score = value; }
+        
+        public int Player2Score 
+        { 
+            get => m_Player2Score; 
+            set => m_Player2Score = value; 
+        }
+        
+        public int Player1Score 
+        { 
+            get => m_Player1Score; 
+            set => m_Player1Score = value; 
+        }
     }
 }

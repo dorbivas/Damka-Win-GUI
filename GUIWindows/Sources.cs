@@ -15,7 +15,7 @@
 
         static Sources()
         {
-            sr_SourcesPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName}\\Resources";
+            sr_SourcesPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, @"Resources");
         }
 
         public static string WhitePiece
