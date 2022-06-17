@@ -24,6 +24,7 @@ namespace GameEngine
         public event Action<GameLogic> GameFinished;
         public event Action<Board> BoardUpdated;
         public event Action PlayerSwitched ;
+        public event Action CurrentPlayerIsPC;
 
         public Board Board
         {
@@ -117,6 +118,13 @@ namespace GameEngine
             }
         }
 
+        private void OnCurrentPlayerIsPC()
+        {
+            if (CurrentPlayerIsPC != null)
+            {
+                CurrentPlayerIsPC.Invoke();
+            }
+        }
 
         public void InitializeGameSpecifications(Board.eBoardSizes i_BoardSizes, string i_Player1Name, string i_Player2Name, bool i_IsPc)
         {

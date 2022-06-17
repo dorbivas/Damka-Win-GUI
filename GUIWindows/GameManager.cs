@@ -113,7 +113,10 @@ namespace GUIWindows
             r_FormGame.SwitchPlayers();
             if (r_Game.GameStatus == GameLogic.eGameStatus.Ongoing && r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer)
             {
-                r_Game.ExecuteSingleTurn(m_DummyMove);
+                do
+                {
+                    r_Game.ExecuteSingleTurn(m_DummyMove);
+                } while (r_Game.CurrentPlayer.SkippingPossibleMoves.Count >0 && r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer);
             }
         }
 
