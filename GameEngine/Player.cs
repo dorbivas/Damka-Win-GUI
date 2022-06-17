@@ -30,7 +30,10 @@ namespace GameEngine
             m_Name = i_PlayerName;
             m_PlayerNumber = i_PlayerNumber;
             m_PlayerType = i_PlayerType;
-            
+            if (m_PlayerType == ePlayerType.Computer)
+            {
+                m_AI = new ComputerAI();
+            }
         }
 
         public List<Move> GetValidMoves(Board i_Board)

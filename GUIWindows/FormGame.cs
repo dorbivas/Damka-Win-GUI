@@ -18,8 +18,8 @@ namespace GUIWindows
         private const int k_StartingPictureBoxY = 40;
         private const int k_Suspension = 130;
         private readonly FormSettings r_FormSettings = new FormSettings();
-        private readonly Label labelPlayer1 = new Label();
-        private readonly Label labelPlayer2 = new Label();
+        private Label labelPlayer1Name;
+        private Label labelPlayer2Name;
         private PictureBoxPiece[,] m_PictureBoxBoard;
         private EventGameSettings m_EventGameSettings;
         private bool isSecondClick = false;
@@ -213,25 +213,9 @@ namespace GUIWindows
                 r_FormSettings.Player2Name,
                 r_FormSettings.BoardSize,
                 r_FormSettings.IsPlayer2PC ? Player.ePlayerType.Computer : Player.ePlayerType.Human); //TODO maybe playerType is redundent
-            setPlayersLabels(m_EventGameSettings.Player1Score, m_EventGameSettings.Player2Score);
+            //setPlayersLabels(m_EventGameSettings.Player1Score, m_EventGameSettings.Player2Score);
             InitialzeNewGameForm();
             OnGameSettingsFiled(m_EventGameSettings);
-        }
-
-        private void setPlayersLabels(int i_Player1Score, int i_Player2Score)
-        {
-            if (r_FormSettings.IsPlayer2PC)//r_FormSettings.Player1Name == "[Deep-blue Computer]")
-            {
-                labelPlayer2.Text = string.Format("{0}: Deep-blue AI", i_Player2Score);
-            }
-            else
-            {
-                this.labelPlayer2.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, i_Player2Score);
-            }
-
-            labelPlayer1.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, i_Player1Score);
-            labelPlayer1.ForeColor = Color.BlanchedAlmond;
-            labelPlayer2.ForeColor = Color.Black;
         }
 
 
@@ -247,11 +231,6 @@ namespace GUIWindows
                                  ((int)r_FormSettings.BoardSize * k_PictureBoxSize) + k_ExtraHeight);
 
         }
-
-        //public void ContinuePlayingMessageBox(game)
-        //{
-
-        //}
 
         public void CreateYesNoMessageBox(string i_MessageBoxString, string i_Caption)
         {
@@ -297,9 +276,26 @@ namespace GUIWindows
             }
         }
 
-        private void OnPopUpBox()
+        public void StartSession(int i_Player1Score, int i_Player2Score, string i_CurrentPlayerName)
         {
-            throw new NotImplementedException();
+            m_EventGameSettings.SetPlayers(i_CurrentPlayerName);
+            setLabels(i_Player1Score, i_Player2Score);
+        }
+
+        private void setLabels(int i_Player1Score, int i_Player2Score)
+        {
+            if (r_FormSettings.IsPlayer2PC)//r_FormSettings.Player1Name == "[Deep-blue Computer]")
+            {
+                this.labelPlayer2Name.Text = string.Format("Deep-blue AI: {0}", i_Player2Score);
+            }
+            else
+            {
+                this.labelPlayer2Name.Text = string.Format("{0}: {1}", r_FormSettings.Player2Name, i_Player2Score);
+            }
+
+            labelPlayer1Name.Text = string.Format("{0}: {1}", r_FormSettings.Player1Name, i_Player1Score);
+            labelPlayer1Name.ForeColor = Color.Black;
+            labelPlayer2Name.ForeColor = Color.Black;
         }
 
         public void SwitchPlayers()

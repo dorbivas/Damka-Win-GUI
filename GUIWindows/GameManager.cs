@@ -12,7 +12,7 @@ namespace GUIWindows
     {
         private readonly FormGame r_FormGame = new FormGame();
         private readonly GameLogic r_Game = new GameLogic();
-
+        private Move m_DummyMove = new Move(new Position(0, 0), new Position(0, 0));
         public void Run()
         {
             attachGameEvents();
@@ -51,6 +51,7 @@ namespace GUIWindows
             else
             {
                 r_Game.ExecuteSingleTurn(i_NextMove);
+
             }
         }
 
@@ -109,18 +110,18 @@ namespace GUIWindows
         private void r_GameEngine_SwitchedPlayers()
         {
             r_FormGame.SwitchPlayers();
+            if (r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer)
+            {
+                r_Game.ExecuteSingleTurn(m_DummyMove);
+            }
         }
 
-        private void r_GameEngine_GameStarted(object sender)
+        private void r_GameEngine_GameStarted(Object sender)
         {
+            r_FormGame.StartSession(r_Game.Player1Score, r_Game.Player2Score, r_Game.CurrentPlayer.Name);
+            r_Game.UpdateGameScores();
             r_Game.ResetGameEngine();
-        }
 
-        private void makeBoard() // todo naming!
-        {
-            //ArrangesPiecesOnBoard();
-            //syncPictereBoxes();
         }
-
     }
 }

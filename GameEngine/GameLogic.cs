@@ -128,12 +128,21 @@ namespace GameEngine
 
         public void ExecuteSingleTurn(Move io_ValidMoveFromUI)
         {
-            //if (m_CurrentPlayer.Type == Player.ePlayerType.Computer)
-            //{
-            //    MinimaxAI.Minimax(this, 3, 1, out io_ValidMoveFromUI);
-            //}
+            if (m_CurrentPlayer.Type == Player.ePlayerType.Computer)
+            {
+                io_ValidMoveFromUI = m_CurrentPlayer.AI.ComputerMove(m_CurrentPlayer.NormarlPossibleMoves, m_CurrentPlayer.SkippingPossibleMoves);
+                //MinimaxAI.Minimax(this, 3, 1, out io_ValidMoveFromUI);
+            }
             m_LastMove = io_ValidMoveFromUI;
-            io_ValidMoveFromUI.Execute(m_NextPlayer, m_GameBoard);
+            if (io_ValidMoveFromUI != null)
+            {
+                io_ValidMoveFromUI.Execute(m_NextPlayer, m_GameBoard);
+            }
+            else
+            {
+                updateGameStatus(false);
+            }
+
             if (m_GameStatus == eGameStatus.Ongoing)
             {
                 if (io_ValidMoveFromUI.IsSkipMove == true)
