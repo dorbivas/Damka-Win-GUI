@@ -66,6 +66,7 @@ namespace GUIWindows
                 {
                     r_GameEngine_SwitchedPlayers();
                 }
+                r_Game.GameStatus = GameLogic.eGameStatus.Ongoing;
                 r_FormGame.ResetEventFormGameSettings();
                 r_FormGame.UpdatePictureBoxBoard(r_Game.Board);               
 
@@ -110,7 +111,7 @@ namespace GUIWindows
         private void r_GameEngine_SwitchedPlayers()
         {
             r_FormGame.SwitchPlayers();
-            if (r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer)
+            if (r_Game.GameStatus == GameLogic.eGameStatus.Ongoing && r_Game.CurrentPlayer.Type == Player.ePlayerType.Computer)
             {
                 r_Game.ExecuteSingleTurn(m_DummyMove);
             }
@@ -121,7 +122,6 @@ namespace GUIWindows
             r_FormGame.StartSession(r_Game.Player1Score, r_Game.Player2Score, r_Game.CurrentPlayer.Name);
             r_Game.UpdateGameScores();
             r_Game.ResetGameEngine();
-
         }
     }
 }

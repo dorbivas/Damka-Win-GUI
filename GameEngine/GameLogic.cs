@@ -73,13 +73,13 @@ namespace GameEngine
         public eGameStatus GameStatus
         {
             get => m_GameStatus;
+            set => m_GameStatus = value;
         }
 
         public void ResetGameEngine()
         {
             m_GameBoard.ClearBoard(m_CurrentPlayer, m_NextPlayer);
             m_GameBoard.ArrangesPiecesOnBoard(m_CurrentPlayer, m_NextPlayer);
-            m_GameStatus = eGameStatus.Ongoing;
             m_CurrentPlayer.UpdatePlayerMoves(m_GameBoard);
             m_NextPlayer.UpdatePlayerMoves(m_GameBoard);
             m_LastMove = null;
@@ -141,6 +141,7 @@ namespace GameEngine
             else
             {
                 updateGameStatus(false);
+                return;
             }
 
             if (m_GameStatus == eGameStatus.Ongoing)
@@ -160,8 +161,8 @@ namespace GameEngine
 
                 OnBoardUpdated();
                 m_LastMove = io_ValidMoveFromUI;
-                updateGameStatus(false);
             }
+                updateGameStatus(false);
         }
 
         private void updatePlayersDetails(string i_Player1Name, string i_Player2Name, bool i_IsComputer)
