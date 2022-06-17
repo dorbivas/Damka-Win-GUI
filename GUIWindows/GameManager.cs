@@ -54,7 +54,6 @@ namespace GUIWindows
             }
         }
 
-        //TODO
         private void r_FormGame_MessageBoxInteractions(object sender, EventArgs e)
         {
             MessageBoxYesNoEvent mbyne = e as MessageBoxYesNoEvent;
@@ -62,16 +61,18 @@ namespace GUIWindows
             if (mbyne.IsMessageBoxClickedYes)
             {
                 r_GameEngine_GameStarted(sender);
-                //r_FormGame.ResetBoard();
-                r_FormGame.InitialzeNewGameForm();
-                r_FormGame.UpdatePictureBoxBoard(r_Game.Board);
+                if (r_Game.CurrentPlayer.PlayerNumber != Player.ePlayerNumber.PlayerOneX )
+                {
+                    r_GameEngine_SwitchedPlayers();
+                }
+                r_FormGame.ResetEventFormGameSettings();
+                r_FormGame.UpdatePictureBoxBoard(r_Game.Board);               
 
             }
             else
             {
                 r_FormGame.Close();
             }
-
         }
 
         private void r_GameEngine_BoardUpdated(Board i_Board)

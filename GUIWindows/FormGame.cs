@@ -36,14 +36,9 @@ namespace GUIWindows
             MessageBox.Show(i_Message);
         }
 
-        public void ResetBoard() // TODO
+        public void ResetEventFormGameSettings()
         {
-            //foreach (PictureBoxPiece piece in m_PictureBoxBoard)
-            //{
-            //    piece.BackColor = Color.Black;
-            //    piece.Image = null;
-            //}
-
+            OnGameSettingsFiled(m_EventGameSettings);
         }
 
         public void InitialzeNewGameForm()
