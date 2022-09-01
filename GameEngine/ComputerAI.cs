@@ -26,5 +26,89 @@ namespace GameEngine
 
             return selectedMove;
         }
+
+          //public Move MiniMax(List<Move> i_NormalMovesList, List<Move> i_SkippingMovesList)
+        //{
+            
+        //}
+
+        //public Move Minimax (Board board, int depth, bool isMaximizing, List<Move> i_NormalMovesList, List<Move> i_SkippingMovesList)
+        //{
+        //    if (depth == 0)
+        //    {
+        //        return null;
+        //    }
+
+        //    if (isMaximizing)
+        //    {
+        //        Move bestMove = null;
+        //        int bestScore = int.MinValue;
+
+        //        foreach (Move move in i_SkippingMovesList)
+        //        {
+        //            Board newBoard = board.Clone();
+        //            newBoard.MakeMove(move);
+        //            int score = Minimax(newBoard, depth - 1, false, i_NormalMovesList, i_SkippingMovesList).Score;
+        //            if (score > bestScore)
+        //            {
+        //                bestScore = score;
+        //                bestMove = move;
+        //            }
+        //        }
+
+        //        foreach (Move move in i_NormalMovesList)
+        //        {
+        //            Board newBoard = board.Clone();
+        //            newBoard.MakeMove(move);
+        //            int score = Minimax(newBoard, depth - 1, false, i_NormalMovesList, i_SkippingMovesList).Score;
+        //            if (score > bestScore)
+        //            {
+        //                bestScore = score;
+        //                bestMove = move;
+        //            }
+        //        }
+
+        //        bestMove.Score = bestScore;
+        //        return bestMove;
+        //    }
+        //    else
+        //    {
+        //        Move bestMove = null;
+        //        int bestScore = int.MaxValue;
+
+        //        foreach (Move move in i_SkippingMovesList)
+        //        {
+        //            Board newBoard = board.Clone();
+        //            newBoard.MakeMove(move);
+        //            int score = Minimax(newBoard, depth - 1, true, i_NormalMovesList, i_SkippingMovesList).Score;
+        //            if (score < bestScore)
+        //            {
+        //                bestScore = score;
+        //                bestMove = move;
+        //            }
+        //        }
+
+        //        foreach (Move move in i_NormalMovesList)
+        //        {
+        //            Board newBoard = board.Clone();
+        //            newBoard.MakeMove(move);
+        //            int score = Minimax(newBoard, depth - 1, true, i_NormalMovesList, i_SkippingMovesList).Score;
+        //            if (score < bestScore)
+        //            {
+        //                bestScore = score;
+        //                bestMove = move;
+        //            }
+        //        }
+
+        //        bestMove.Score = bestScore;
+        //        return bestMove;
+        //    }
+        //}
+
+        //Move MakeMove(Board board, List<Move> i_NormalMovesList, List<Move> i_SkippingMovesList)
+        //{
+        //    Move bestMove = Minimax(board, 2, true, i_NormalMovesList, i_SkippingMovesList);
+        //    return bestMove;
+        //}
     }
 }
